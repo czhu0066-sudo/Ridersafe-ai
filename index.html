@@ -1,1213 +1,494 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>RiderSafe AI</title>
-<meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="A multilingual, community-powered navigation and safety app for international food-delivery riders in Melbourne.">
+<meta name="theme-color" content="#178a57">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
 <style>
-/* Layout: white page, mint "storyboard" panels holding phone screens, one deep-green band for the hypothesis.
-   Single light look by choice, matching the supplied concept board. */
 :root{
+  --ink:#0f2a26; --body:#33463f; --muted:#6a7b75; --line:#e2ebe6;
+  --mint:#eef6f1; --mint-2:#dcefe3; --green:#178a57; --green-d:#0f6b43; --green-b:#22a565;
+  --red:#e8403f; --orange:#f2792a; --yellow:#f9d24a; --yellow-ink:#2a2306; --blue:#2f6fed;
+  --night:#121615; --night-2:#232927; --night-3:#39403d;
+  --font:"Plus Jakarta Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"PingFang SC","Hiragino Sans","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
   color-scheme:light;
-  --paper:#ffffff;
-  --ink:#0f2a26;          /* "Rider" wordmark, headings */
-  --body:#33463f;
-  --muted:#6a7b75;
-  --line:#e2ebe6;
-  --mint:#eef6f1;         /* storyboard panels */
-  --mint-2:#dcefe3;
-  --green:#178a57;        /* primary action */
-  --green-d:#0f6b43;
-  --green-b:#22a565;      /* icons, checks */
-  --forest:#0f3b2c;       /* hypothesis band */
-  --red:#ea4747;
-  --orange:#f2792a;
-  --yellow:#f9d24a;
-  --yellow-ink:#2a2306;
-  --blue:#2f6fed;
-  --night:#121615;
-  --night-2:#262c2a;
-  --night-3:#3a413e;
-  --font:"Plus Jakarta Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"PingFang SC","Hiragino Sans","Microsoft YaHei","Noto Sans CJK SC","Noto Sans JP",sans-serif;
-  --r-lg:24px;
-  --r-md:16px;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
-body{background:var(--paper);color:var(--body);font-family:var(--font);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
-h1,h2,h3,h4{color:var(--ink);margin:0;text-wrap:balance;line-height:1.15;letter-spacing:-.02em}
-p{margin:0}
-button{font:inherit;cursor:pointer}
-a{color:var(--green-d)}
-:focus-visible{outline:3px solid var(--blue);outline-offset:2px;border-radius:6px}
-.wrap{max-width:1200px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+html,body{height:100%;margin:0}
+body{background:#dfeee5;font-family:var(--font);color:var(--ink);-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:pointer}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
 .ic{width:1em;height:1em;flex:none;display:inline-block;vertical-align:middle}
-section{scroll-margin-top:72px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 
-/* ---------- header ---------- */
-.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(255,255,255,.92);backdrop-filter:saturate(1.4) blur(10px);-webkit-backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid var(--line)}
-.top .wrap{display:flex;align-items:center;gap:24px;height:64px}
-.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-weight:800;font-size:19px;letter-spacing:-.02em}
-.brand svg{width:44px;height:30px}
-.brand span span,.word span{color:var(--green)}
-.nav{display:flex;gap:4px;margin-left:auto}
-.nav a{color:var(--body);text-decoration:none;font-weight:600;font-size:14px;padding:8px 10px;border-radius:8px}
-.nav a:hover{background:var(--mint);color:var(--ink)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:46px;padding:0 20px;border-radius:12px;font-weight:700;font-size:15px;text-decoration:none;border:1.5px solid transparent;transition:background .15s,transform .15s}
-.btn .ic{font-size:18px}
-.btn-p{background:var(--green);color:#fff}
-.btn-p:hover{background:var(--green-d)}
-.btn-o{background:#fff;color:var(--ink);border-color:var(--mint-2)}
-.btn-o:hover{border-color:var(--green)}
-.top .btn{height:40px;font-size:14px;padding:0 16px}
-.brand,.top .btn{white-space:nowrap}
-@media (max-width:980px){.nav{display:none}.top .btn{margin-left:auto}}
-@media (max-width:420px){.top .btn .ic{display:none}.top .btn{font-size:13px;padding:0 12px}.brand{font-size:17px}.brand svg{width:38px}}
-
-/* ---------- hero ---------- */
-.hero{padding-block:56px 72px}
-.hero .wrap{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:48px;align-items:center}
-.chip{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--green-d);background:var(--mint);border:1px solid var(--mint-2);padding:6px 12px;border-radius:999px;letter-spacing:.01em}
-.lockup{display:flex;align-items:center;gap:18px;margin-top:22px}
-.lockup svg{width:clamp(72px,9vw,112px);height:auto;flex:none}
-.word{font-size:clamp(40px,5.2vw,66px);font-weight:800;letter-spacing:-.035em;line-height:.95;color:var(--ink);white-space:nowrap}
-.tagline{margin-top:18px;font-size:clamp(19px,2.2vw,24px);font-weight:700;color:var(--ink);letter-spacing:-.01em}
-.lead{margin-top:14px;font-size:18px;max-width:34em;color:var(--body)}
-.badges{display:flex;flex-wrap:wrap;gap:12px 24px;margin-top:26px}
-.badge{display:flex;align-items:center;gap:8px;font-weight:600;font-size:14.5px;color:var(--ink);white-space:nowrap}
-.badge .ic{font-size:24px;color:var(--green-b)}
-.cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
-.hero-art{position:relative;background:var(--mint);border-radius:32px;padding:34px 18px 0;overflow:hidden}
-.hero-art::before{content:"";position:absolute;inset:auto -10% -30% -10%;height:60%;background:radial-gradient(closest-side,rgba(34,165,101,.16),transparent);pointer-events:none}
-.hero-phones{position:relative;display:flex;justify-content:center;align-items:flex-start}
-.hero-phones .phone:nth-child(2){margin-left:-70px;margin-top:64px;box-shadow:0 30px 60px -20px rgba(15,42,38,.45)}
-.hero-art .pfit{margin-bottom:-120px}
-@media (max-width:900px){.hero .wrap{grid-template-columns:1fr}.hero{padding-block:36px 56px}}
-@media (max-width:480px){.lockup{gap:12px}.lockup svg{width:60px}.lockup .word{font-size:clamp(30px,9.4vw,40px)}.badges{gap:12px 18px}.cta-row .btn{flex:1 1 auto}}
-
-/* ---------- section scaffolding ---------- */
-.sec{padding-block:88px}
-.sec.tint{background:linear-gradient(180deg,#f7fbf8,#fff)}
-.eyebrow{font-size:13px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--green)}
-.sec h2{font-size:clamp(28px,3.6vw,42px);font-weight:800;margin-top:10px;max-width:22em}
-.sec .intro{margin-top:14px;font-size:17.5px;max-width:40em}
-.sec-head{margin-bottom:40px}
-@media (max-width:640px){.sec{padding-block:60px}.sec-head{margin-bottom:28px}}
-
-/* ---------- concept ---------- */
-.concept{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:28px;align-items:stretch}
-.vp{background:var(--mint);border-radius:var(--r-lg);padding:36px 36px 32px;display:flex;flex-direction:column;gap:22px}
-.vp blockquote{margin:0;font-size:clamp(22px,2.4vw,29px);line-height:1.32;font-weight:700;color:var(--ink);letter-spacing:-.015em;text-wrap:pretty}
-.vp blockquote mark{background:linear-gradient(transparent 62%,rgba(34,165,101,.28) 62%);color:inherit}
-.vp .src{font-size:14px;color:var(--muted);font-weight:600}
-.vp p.body{font-size:16px}
-.user{border:1px solid var(--line);border-radius:var(--r-lg);padding:30px;display:flex;flex-direction:column;gap:18px}
-.user h3{font-size:20px}
-.user .who{display:flex;gap:14px;align-items:center;padding:14px;border-radius:14px;background:#f7faf8}
-.user .who .av{width:46px;height:46px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;flex:none}
-.user .who .av .ic{font-size:24px}
-.user .who b{display:block;color:var(--ink);font-size:15.5px;line-height:1.3}
-.user .who span{font-size:13.5px;color:var(--muted)}
-.needs{list-style:none;margin:0;padding:0;display:grid;gap:10px}
-.needs li{display:flex;gap:12px;align-items:flex-start;font-size:15px}
-.needs .ic{font-size:20px;color:var(--green-b);margin-top:2px}
-.challenge{font-size:15px;border-top:1px dashed var(--mint-2);padding-top:16px}
-.challenge b{color:var(--ink)}
-@media (max-width:900px){.concept{grid-template-columns:1fr}.vp{padding:26px 22px}.user{padding:22px}}
-
-/* ---------- features ---------- */
-.feats{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:18px}
-.feat{grid-column:span 2;border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;display:flex;flex-direction:column;background:#fff}
-.feat.wide{grid-column:span 3}
-.fhead{display:flex;align-items:center;gap:14px;padding:18px 20px;color:#fff}
-.fhead .ic{font-size:34px}
-.fhead h3{color:inherit;font-size:16px;font-weight:800;letter-spacing:.03em;text-transform:uppercase}
-.fhead small{display:block;font-size:13px;opacity:.92;font-weight:500;margin-top:2px;letter-spacing:0;text-transform:none}
-.f-red{background:var(--red)}.f-orange{background:var(--orange)}.f-yellow{background:var(--yellow);color:var(--yellow-ink)}
-.f-mint{background:var(--mint);color:var(--ink)}
-.f-mint .ic{color:var(--green-b)}
-.fbody{margin:0;padding:16px 20px 20px;display:grid;gap:12px}
-.kv{display:grid;grid-template-columns:110px minmax(0,1fr);gap:10px;font-size:14.5px;line-height:1.45}
-.kv dt{font-weight:700;color:var(--muted);font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding-top:2px}
-.kv dd{margin:0;color:var(--ink)}
-@media (max-width:980px){.feats{grid-template-columns:1fr 1fr}.feat,.feat.wide{grid-column:span 1}.feat:last-child{grid-column:span 2}}
-@media (max-width:640px){.feats{grid-template-columns:1fr}.feat:last-child{grid-column:span 1}.kv{grid-template-columns:1fr;gap:2px}}
-
-/* ---------- how it works ---------- */
-.flow{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:12px;position:relative;counter-reset:f}
-.flow::before{content:"";position:absolute;left:7%;right:7%;top:31px;height:2px;background:repeating-linear-gradient(90deg,var(--green-b) 0 8px,transparent 8px 14px);opacity:.55}
-.flow li{position:relative;text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px}
-.flow .node{width:64px;height:64px;border-radius:50%;background:#fff;border:2px solid var(--mint-2);display:grid;place-items:center;color:var(--green);position:relative;z-index:1}
-.flow .node .ic{font-size:28px}
-.flow .node em{position:absolute;top:-4px;right:-4px;width:24px;height:24px;border-radius:50%;background:var(--green);color:#fff;font-style:normal;font-weight:800;font-size:12px;display:grid;place-items:center}
-.flow li:last-child .node{background:var(--green);border-color:var(--green);color:#fff}
-.flow li:last-child .node em{background:var(--ink)}
-.flow p{font-size:14.5px;font-weight:600;color:var(--ink);line-height:1.35;max-width:12em}
-.loopnote{margin-top:30px;display:flex;align-items:center;gap:12px;background:var(--mint);border-radius:14px;padding:14px 18px;font-size:15px;color:var(--ink);max-width:max-content}
-.loopnote .ic{font-size:22px;color:var(--green)}
-@media (max-width:900px){
-  .flow{grid-template-columns:1fr;gap:0}
-  .flow::before{left:31px;right:auto;top:20px;bottom:20px;width:2px;height:auto;background:repeating-linear-gradient(180deg,var(--green-b) 0 8px,transparent 8px 14px)}
-  .flow li{flex-direction:row;text-align:left;gap:16px;padding-block:8px}
-  .flow p{max-width:none}
-  .loopnote{max-width:none}
+/* ---------- app shell: full screen on phones, phone-sized card on desktop ---------- */
+#app{position:fixed;inset:0;background:#fff;overflow:hidden;display:flex;flex-direction:column}
+@media (min-width:700px) and (min-height:640px){
+  #app{inset:auto;left:50%;top:50%;transform:translate(-50%,-50%);width:410px;height:min(860px,calc(100vh - 48px));border-radius:36px;box-shadow:0 0 0 10px #0b0e0d,0 40px 80px -30px rgba(15,42,38,.55)}
+  body::before{content:"RiderSafe AI · prototype";position:fixed;left:50%;bottom:10px;transform:translateX(-50%);font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#5c7a6c}
 }
 
-/* ---------- storyboard gallery ---------- */
-.board{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
-.shot{background:var(--mint);border-radius:22px;padding:20px 14px 18px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;border:0;color:inherit;transition:transform .2s,box-shadow .2s;position:relative}
-.shot[data-open]{cursor:pointer}
-.shot[data-open]:hover{transform:translateY(-3px);box-shadow:0 16px 30px -18px rgba(15,42,38,.4)}
-.shot h3{font-size:19px;font-weight:800}
-.shot h3 + p{font-size:15px;color:var(--ink);margin-top:-8px}
-.shot .cap{font-size:14px;color:var(--body);line-height:1.4;max-width:17em}
-.shot .open{font-size:13.5px;font-weight:700;color:var(--green-d);display:inline-flex;gap:6px;align-items:center;background:#fff;border:1.5px solid var(--mint-2);border-radius:999px;padding:6px 14px;margin-top:auto}
-.shot .open:hover{border-color:var(--green)}
-.pfit{width:100%;display:flex;justify-content:center}
-.pfit .phone{zoom:var(--z,.75)}
-.summary{justify-content:flex-start;gap:16px;padding:28px 22px 22px}
-.summary svg.logo{width:96px;height:auto}
-.summary .word{font-size:30px;margin-top:-4px}
-.summary .tl{font-weight:700;color:var(--ink);font-size:15.5px;line-height:1.35}
-.checks{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:11px;text-align:left;width:100%}
-.checks li{display:flex;gap:10px;align-items:flex-start;font-size:14.5px;color:var(--ink);line-height:1.35}
-.checks li i{width:20px;height:20px;border-radius:50%;background:var(--green-b);color:#fff;display:grid;place-items:center;flex:none;margin-top:1px}
-.checks li i .ic{font-size:13px}
-.skyline{width:100%;height:auto;margin-top:auto;color:#9db4a9}
-.summary .foot{font-size:14px;color:var(--body)}
-@media (max-width:1100px){.board{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:640px){
-  .board{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:84%;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:14px;margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding-inline:max(16px,env(safe-area-inset-left,0px));scroll-padding-inline:max(16px,env(safe-area-inset-left,0px))}
-  .shot{scroll-snap-align:start}
-  .swipe-hint{display:flex!important}
-}
-.swipe-hint{display:none;align-items:center;gap:8px;font-size:13.5px;color:var(--muted);margin-top:4px;font-weight:600}
+/* top bar */
+.bar{position:absolute;z-index:40;left:0;right:0;top:0;padding:calc(env(safe-area-inset-top,0px) + 10px) 12px 0;display:flex;align-items:center;gap:8px;pointer-events:none}
+.bar > *{pointer-events:auto}
+.iconbtn{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.94);box-shadow:0 2px 10px -2px rgba(0,0,0,.2);display:grid;place-items:center;font-size:20px;color:var(--ink)}
+.iconbtn[hidden]{display:none}
+.dots{flex:1;display:flex;justify-content:center;gap:6px}
+.dots button{width:8px;height:8px;border-radius:5px;background:rgba(15,42,38,.22);transition:width .25s,background .25s}
+.dots button.on{width:22px;background:var(--green)}
+.dark .dots button{background:rgba(255,255,255,.3)}
+.dark .dots button.on{background:#7fd6a4}
+.who{position:absolute;z-index:40;left:50%;top:calc(env(safe-area-inset-top,0px) + 56px);transform:translateX(-50%);font-size:12px;font-weight:700;padding:5px 11px;border-radius:999px;background:var(--mint);color:var(--green-d);white-space:nowrap;box-shadow:0 2px 8px -3px rgba(0,0,0,.2)}
+.who.b{background:#fff1e6;color:#a4480d}
+.who[hidden]{display:none}
 
-/* ---------- live demo ---------- */
-.demo{display:grid;grid-template-columns:auto minmax(0,1fr);gap:48px;align-items:start}
-.demo-stage{display:flex;flex-direction:column;align-items:center;gap:14px;width:340px;max-width:100%}
-.rider-chip{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:14px;padding:8px 14px;border-radius:999px;background:var(--mint);color:var(--green-d);transition:background .3s,color .3s}
-.rider-chip.b{background:#fff1e6;color:#a4480d}
-.rider-chip .cdot{width:9px;height:9px;border-radius:50%;background:currentColor}
-.demo-stage .pfit{min-height:200px}
-.panel{border:1px solid var(--line);border-radius:var(--r-lg);padding:24px;display:flex;flex-direction:column;gap:18px;position:sticky;top:calc(84px + env(safe-area-inset-top,0px))}
-.panel-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
-.panel label{font-size:13px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
-.selwrap{position:relative}
-.selwrap select{appearance:none;-webkit-appearance:none;font:inherit;font-weight:600;font-size:15px;color:var(--ink);background:#fff;border:1.5px solid var(--mint-2);border-radius:10px;height:42px;padding:0 40px 0 14px}
-.selwrap .ic{position:absolute;right:12px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--muted)}
-.steps{list-style:none;margin:0;padding:0;display:grid;gap:6px}
-.step{width:100%;display:flex;gap:14px;align-items:flex-start;text-align:left;background:transparent;border:1.5px solid transparent;border-radius:14px;padding:10px 12px;color:var(--ink)}
-.step:hover{background:#f6faf7}
-.step .n{width:30px;height:30px;border-radius:50%;background:var(--mint);color:var(--green-d);font-weight:800;font-size:14px;display:grid;place-items:center;flex:none;font-variant-numeric:tabular-nums}
-.step b{display:block;font-size:15.5px;line-height:1.3;padding-top:4px}
-.step small{display:none;font-size:14px;color:var(--body);line-height:1.45;margin-top:4px}
-.step.on{background:var(--mint);border-color:var(--mint-2)}
-.step.on .n{background:var(--green);color:#fff}
-.step.on small{display:block}
-.step.done .n{background:var(--green-b);color:#fff}
-.ctrl{display:flex;gap:10px;flex-wrap:wrap}
-.ctrl .btn{height:42px;font-size:14.5px}
-.note{display:flex;gap:10px;font-size:13.5px;color:var(--muted);line-height:1.45}
-.note .ic{font-size:18px;color:var(--green);margin-top:1px}
-.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-@media (max-width:900px){.demo{grid-template-columns:1fr;gap:28px;justify-items:center}.panel{position:static;width:100%}}
+/* screens */
+.scr{position:absolute;inset:0;display:none;flex-direction:column;background:#fff}
+.scr.on{display:flex;animation:in .3s ease-out}
+@keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.pad{padding:calc(env(safe-area-inset-top,0px) + 70px) 22px calc(env(safe-area-inset-bottom,0px) + 22px)}
+.map{position:absolute;inset:0;background:#eef1ef}
+.map svg{width:100%;height:100%;display:block}
+.big{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:64px;border-radius:18px;font-size:19px;font-weight:800;letter-spacing:-.01em}
+.big .ic{font-size:26px}
+.g{background:var(--green);color:#fff;box-shadow:0 10px 24px -12px rgba(23,138,87,.9)}
+.g:active{background:var(--green-d)}
+.grey{background:#eef1f2;color:#33433e}
+.ghost{background:transparent;color:var(--muted);font-weight:700;min-height:48px;font-size:16px}
+.bottom{position:absolute;left:0;right:0;bottom:0;padding:16px 16px calc(env(safe-area-inset-bottom,0px) + 18px);display:grid;gap:10px;z-index:5}
 
-/* ---------- stakeholders ---------- */
-.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-md)}
-table{border-collapse:collapse;width:100%;min-width:720px;font-size:15px}
-th,td{text-align:left;padding:16px 20px;vertical-align:top;border-bottom:1px solid var(--line)}
-thead th{background:var(--mint);color:var(--ink);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:800}
-tbody tr:last-child td{border-bottom:0}
-tbody td:first-child{font-weight:700;color:var(--ink)}
-.role{display:inline-block;font-size:13px;font-weight:700;padding:3px 10px;border-radius:999px;background:#f2f5f3;color:var(--body);white-space:nowrap}
-.role.primary{background:var(--green);color:#fff}
-@media (max-width:640px){.tablewrap{border:0;overflow:visible}table{min-width:0}thead{display:none}table,tbody,tr,td{display:block;width:100%}tr{border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:12px}td{border:0;padding:4px 0}td[data-l]::before{content:attr(data-l);display:block;font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:6px}tbody td:first-child{font-size:16.5px}}
+/* 1 welcome */
+.s1{justify-content:space-around}
+.brand{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px}
+.brand svg{width:96px;height:auto}
+.word{font-size:32px;font-weight:800;letter-spacing:-.03em;color:var(--ink)}
+.word span{color:var(--green)}
+.tag{font-size:15px;font-weight:600;color:var(--body);line-height:1.4}
+.lbl{font-size:14px;font-weight:800;color:var(--ink);margin-bottom:10px}
+.langs{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.lang{min-height:58px;border-radius:14px;border:2px solid var(--line);font-size:17px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;background:#fff}
+.lang.on{border-color:var(--green);background:var(--mint);color:var(--green-d)}
+.lang.on::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--green)}
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:20px;padding:14px 16px;border-radius:14px;background:#f6f9f7}
+.row b{display:block;font-size:15px}
+.row small{display:block;font-size:12.5px;color:var(--muted);margin-top:2px}
+.sw{width:54px;height:32px;border-radius:16px;background:#c9d3cf;position:relative;flex:none;transition:background .2s}
+.sw i{position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .2s}
+.sw.on{background:var(--green-b)}
+.sw.on i{transform:translateX(22px)}
 
-/* ---------- pilot & testing ---------- */
-.pt{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
-.card{border:1px solid var(--line);border-radius:var(--r-lg);padding:28px;display:flex;flex-direction:column;gap:16px;min-width:0}
-.card h3{font-size:22px;display:flex;align-items:center;gap:10px}
-.card h3 .ic{color:var(--green);font-size:26px}
-.pilotmap{position:relative;border-radius:16px;overflow:hidden;aspect-ratio:4/3;max-width:100%;background:#eef1ef}
-.pilotmap svg{position:absolute;inset:0;width:100%;height:100%}
-.pilotmap .zone{position:absolute;right:12px;top:12px;background:#fff;border-radius:10px;padding:6px 10px;font-size:12.5px;font-weight:700;color:var(--green-d);box-shadow:0 4px 14px -6px rgba(0,0,0,.25);display:flex;gap:6px;align-items:center}
-.pilotmap .zone i{width:18px;height:0;border-top:2.5px dashed var(--green)}
-.tests{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:8px 18px}
-.tests li{display:flex;gap:10px;font-size:14.5px;color:var(--ink);line-height:1.4}
-.tests .ic{color:var(--green-b);font-size:18px;margin-top:2px}
-.story{display:grid;gap:12px}
-.beat{display:flex;gap:14px;align-items:flex-start;background:#f7faf8;border-radius:14px;padding:14px 16px}
-.beat .who{flex:none;width:40px;height:40px;border-radius:12px;display:grid;place-items:center;color:#fff;font-weight:800}
-.beat .who.a{background:var(--orange)}
-.beat .who.b{background:var(--blue)}
-.beat b{color:var(--ink);display:block;font-size:15px}
-.beat p{font-size:14.5px;line-height:1.45}
-.metrics{display:flex;flex-wrap:wrap;gap:8px}
-.metrics span{font-size:13.5px;font-weight:600;color:var(--ink);background:#fff;border:1.5px solid var(--mint-2);border-radius:999px;padding:6px 12px}
-.sub-h{font-size:12.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
-@media (max-width:900px){.pt{grid-template-columns:1fr}.card{padding:22px}}
-@media (max-width:480px){.tests{grid-template-columns:1fr}}
-
-/* ---------- hypothesis band ---------- */
-.band{background:var(--forest);color:#d7eadf;padding-block:84px}
-.band .eyebrow{color:#7fd6a4}
-.band .q{font-size:clamp(26px,3.6vw,44px);font-weight:800;color:#fff;line-height:1.2;letter-spacing:-.025em;max-width:24em;margin-top:14px;text-wrap:balance}
-.band .q em{font-style:normal;color:#9be7bb}
-.band-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin-top:44px}
-.bcard{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:14px}
-.bcard h3{color:#fff;font-size:19px;display:flex;gap:10px;align-items:center}
-.bcard h3 .ic{color:#7fd6a4;font-size:22px}
-.bcard p{font-size:15.5px;line-height:1.55}
-.formats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-.formats div{background:rgba(255,255,255,.07);border-radius:14px;padding:14px 12px;display:flex;flex-direction:column;gap:8px;font-size:14px;color:#fff;font-weight:600;line-height:1.35}
-.formats .ic{font-size:24px;color:#9be7bb}
-@media (max-width:900px){.band-grid{grid-template-columns:1fr}.band{padding-block:60px}}
-@media (max-width:480px){.formats{grid-template-columns:1fr}}
-
-/* ---------- next steps ---------- */
-.next{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 28px;counter-reset:n}
-.next li{display:flex;gap:16px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);font-size:16px;color:var(--ink);font-weight:600;counter-increment:n}
-.next li::before{content:counter(n);width:36px;height:36px;border-radius:50%;border:2px solid var(--green);color:var(--green-d);display:grid;place-items:center;font-weight:800;font-size:15px;flex:none;font-variant-numeric:tabular-nums}
-.next li:last-child{grid-column:1 / -1}
-@media (max-width:760px){.next{grid-template-columns:1fr}}
-
-/* ---------- footer ---------- */
-.foot{padding-block:24px 48px}
-.footcard{background:var(--mint);border-radius:28px;padding:40px;display:grid;grid-template-columns:auto minmax(0,1fr) minmax(0,1fr);gap:36px;align-items:center;overflow:hidden}
-.footcard .brandbig{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
-.footcard .brandbig svg{width:92px;height:auto}
-.footcard .brandbig .word{font-size:34px}
-.footcard .tl{font-weight:700;color:var(--ink)}
-.footcard .sky{display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--body);font-weight:600}
-.legal{margin-top:18px;font-size:13px;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px 18px;justify-content:space-between}
-@media (max-width:980px){.footcard{grid-template-columns:1fr;padding:28px 22px;gap:24px}}
-
-/* =========================================================
-   PHONE  (native size 316 x 640; scaled with CSS zoom)
-   ========================================================= */
-.phone{width:316px;height:640px;border-radius:50px;background:#0b0e0d;padding:8px;position:relative;flex:none;box-shadow:inset 0 0 0 1.5px #2e3432,0 26px 50px -24px rgba(15,42,38,.45);text-align:left}
-.ps{position:relative;width:300px;height:624px;border-radius:42px;overflow:hidden;background:#fff;color:#13201c;font-size:13px;line-height:1.35;letter-spacing:0}
-.ps.dark{background:var(--night)}
-.island{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:92px;height:27px;border-radius:20px;background:#0b0e0d;z-index:30}
-.status{position:absolute;top:0;left:0;right:0;height:46px;display:flex;align-items:center;justify-content:space-between;padding:4px 24px 0 34px;font-weight:700;font-size:14px;z-index:25;color:#111;background:#fff}
-.ps.dark .status{color:#fff;background:var(--night)}
-.status .si{display:flex;gap:5px;align-items:center}
-.homebar{position:absolute;bottom:7px;left:50%;transform:translateX(-50%);width:108px;height:4.5px;border-radius:3px;background:#111;z-index:30}
-.ps.dark .homebar{background:#fff}
-.app{position:absolute;inset:46px 0 0 0;display:flex;flex-direction:column;animation:appIn .32s ease-out}
-@keyframes appIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-.ps [data-act]{cursor:pointer}
-.ps button{border:0;background:none;color:inherit;padding:0;font:inherit}
-.ps h4{letter-spacing:-.01em}
-.ps[lang="ja"] h4,.ps[lang^="zh"] h4{word-break:auto-phrase;line-break:strict}
-.ps .ic{width:1em;height:1em}
-.btn-g{display:flex;align-items:center;justify-content:center;gap:8px;height:46px;border-radius:11px;background:var(--green)!important;color:#fff!important;font-weight:700!important;font-size:14.5px!important;width:100%}
-.btn-g .ic{font-size:18px}
-.btn-grey{height:44px;border-radius:11px;background:#eceff0!important;color:#33433e!important;font-weight:600!important;font-size:14px!important;width:100%}
-
-/* s1 onboarding */
-.s1{padding:14px 22px 30px}
-.s1-brand{text-align:center;display:flex;flex-direction:column;align-items:center}
-.s1-brand svg{width:84px;height:auto}
-.s1-word{font-size:25px;font-weight:800;color:var(--ink);letter-spacing:-.02em;margin-top:2px}
-.s1-word span{color:var(--green)}
-.s1-brand p{font-size:13px;color:#33433e;margin-top:4px;line-height:1.4}
-.fld{margin-top:20px}
-.lbl{font-size:12.5px;font-weight:700;color:#16231f}
-.selbox{margin-top:7px;height:42px;border:1px solid #d9e0dc;border-radius:10px;display:flex;align-items:center;gap:10px;padding:0 12px;position:relative;background:#fff}
-.lcode{width:24px;height:24px;border-radius:6px;background:var(--mint);color:var(--green-d);font-size:11.5px;font-weight:800;display:grid;place-items:center}
-.lname{flex:1;font-size:13.5px;font-weight:600}
-.selbox > .ic{font-size:16px;color:#6a7b75}
-.selbox select{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:16px}
-.vgrid{margin-top:7px;display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
-.vt{height:66px;border:1px solid #dfe5e2!important;border-radius:10px;background:#fff!important;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;font-size:10.5px!important;font-weight:600!important;color:#25332e}
-.vt .ic{font-size:24px}
-.vt.on{border:1.5px solid var(--green)!important;background:var(--mint)!important;color:var(--green-d)}
-.arow{margin-top:20px;display:flex;align-items:center;justify-content:space-between;gap:10px}
-.arow .sub{font-size:10.5px;color:#6a7b75;margin-top:2px}
-.sw{width:46px;height:27px;border-radius:14px;background:#c9d3cf!important;position:relative;flex:none;transition:background .2s}
-.sw i{position:absolute;top:2px;left:2px;width:23px;height:23px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .2s}
-.sw.on{background:var(--green-b)!important}
-.sw.on i{transform:translateX(19px)}
-.s1 .btn-g{margin-top:auto}
-
-/* map screens */
-.mapwrap{position:relative;flex:1;overflow:hidden;background:#eef1ef}
-.mapwrap > svg,.minimap > svg{position:absolute;inset:0;width:100%;height:100%;display:block}
-.tripcard{position:absolute;top:10px;left:12px;right:12px;background:#fff;border-radius:14px;box-shadow:0 6px 18px -6px rgba(0,0,0,.25);padding:12px 12px 12px 14px;display:flex;align-items:flex-start;gap:8px}
-.tripcard b{display:block;font-size:16px;font-weight:800;color:#13201c}
-.tripcard span{display:block;font-size:11px;color:#5f6f69;margin-top:2px}
-.tripcard .x{margin-left:auto;width:26px;height:26px;display:grid;place-items:center;color:#33433e;font-size:18px}
-.fabs{position:absolute;right:12px;top:96px;display:flex;flex-direction:column;gap:10px}
-.fabs.low{top:auto;bottom:62px}
-.fab{width:38px;height:38px;border-radius:50%;background:#fff!important;box-shadow:0 4px 12px -4px rgba(0,0,0,.3);display:grid;place-items:center;color:#33433e!important;font-size:18px}
-.fab.blue{color:var(--blue)!important}
-.report{position:absolute!important;left:14px;right:14px;bottom:14px;width:auto!important;height:48px!important;box-shadow:0 8px 18px -8px rgba(23,138,87,.7)}
-.tabbar{height:64px;display:flex;border-top:1px solid #eef1ef;background:#fff;padding-bottom:14px;flex:none}
-.tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:10px!important;font-weight:600!important;color:#7b8984!important}
-.tab .ic{font-size:20px}
-.tab.on{color:var(--green)!important}
-.mlabel text{font-size:10px;font-weight:600;fill:#4b5853;paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round}
-.mlabel.strong text{font-size:12.5px;font-weight:700;fill:#26322e}
-.pulse{transform-box:fill-box;transform-origin:center;animation:pulse 1.8s ease-out infinite}
-@keyframes pulse{0%{transform:scale(.55);opacity:.55}100%{transform:scale(1.25);opacity:0}}
-
-/* s3 quick report */
-.s3{padding:34px 18px 30px;text-align:center}
-.s3 h4{font-size:21px;font-weight:800;color:#13201c}
-.sub{font-size:11.5px;color:#5f6f69;margin-top:4px}
-.cats{margin-top:22px;display:flex;flex-direction:column;gap:10px}
-.cat{display:flex!important;align-items:center;gap:14px;padding:14px 14px 14px 16px!important;border-radius:12px;text-align:left;color:#fff!important;min-height:82px}
-.cat .ic{font-size:36px;flex:none}
-.cat b{display:block;font-size:13.5px;font-weight:800;letter-spacing:.02em}
-.cat small{display:block;font-size:10.5px;opacity:.95;line-height:1.3;margin-top:3px}
-.cat.red{background:var(--red)!important}.cat.orange{background:var(--orange)!important}.cat.yellow{background:var(--yellow)!important;color:var(--yellow-ink)!important}
-.cat:active{filter:brightness(.95)}
-.s3 .btn-grey{margin-top:auto}
-
-/* s4 confirmation */
-.s4{padding:24px 18px 30px;text-align:center}
-.okc{width:62px;height:62px;border-radius:50%;background:var(--green-b);color:#fff;display:grid;place-items:center;margin:0 auto;font-size:32px}
-.okc .ic{stroke-width:3}
-.s4 h4{font-size:17px;font-weight:800;color:#13201c;margin-top:12px}
-.s4 .sub{max-width:200px;margin-inline:auto}
-.minimap{position:relative;margin-top:16px;height:150px;border-radius:12px;overflow:hidden;background:#eef1ef;border:1px solid #e3e8e5;flex:none}
-.maplabel{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);background:#fff;border-radius:8px;box-shadow:0 4px 12px -4px rgba(0,0,0,.3);padding:4px 12px;text-align:center;white-space:nowrap}
-.maplabel b{display:block;font-size:11.5px;font-weight:700}
-.maplabel span{display:block;font-size:10px;color:#5f6f69}
-.facts{list-style:none;margin:16px 0 0;padding:0;text-align:left;display:grid;gap:12px}
-.facts li{display:flex;gap:12px;align-items:center;padding:0 4px}
-.facts .ic{font-size:20px;color:#1d2b27}
-.facts b{display:block;font-size:12px;font-weight:700}
-.facts span{display:block;font-size:11px;color:#5f6f69}
-.s4 .btn-g{margin-top:auto}
-
-/* s5 alert */
-.s5{padding:8px 10px 26px;background:var(--night)}
-.ncard{background:var(--night-2);border-radius:18px;padding:14px;color:#fff;display:flex;flex-direction:column}
-.nhead{display:flex;align-items:center;gap:9px}
-.appic{width:30px;height:30px;border-radius:8px;background:#e64545;color:#fff;display:grid;place-items:center;font-size:18px}
-.nhead span:not(.appic){font-size:12px;font-weight:600;opacity:.85}
-.nx{margin-left:auto;width:26px;height:26px;border-radius:50%;background:var(--night-3)!important;display:grid;place-items:center;font-size:14px}
-.ncard h4{color:#fff;font-size:25px;font-weight:800;line-height:1.12;margin-top:16px}
-.dist{font-size:15px;font-weight:600;opacity:.92;margin-top:5px}
-.ncard .minimap{border:0;height:122px}
-.audiochip{margin-top:10px;align-self:flex-start;background:var(--night-3)!important;color:#d9e3df!important;font-size:11px!important;font-weight:600!important;padding:6px 11px!important;border-radius:20px;display:flex!important;align-items:center;gap:6px}
-.audiochip .ic{font-size:14px;color:#7fd6a4}
-.audiochip.speaking .ic{animation:blink 1s ease-in-out infinite}
-@keyframes blink{50%{opacity:.3}}
-.ncard .btn-g{margin-top:12px}
-.btn-dk{height:44px;border-radius:11px;background:var(--night-3)!important;color:#fff!important;font-weight:600!important;font-size:14px!important;margin-top:9px;width:100%}
-.reported{font-size:11px;color:#a9b8b2;margin-top:10px;display:flex;align-items:center;gap:6px}
-.reported .ic{font-size:14px}
-
-/* s6 verification */
-.s6{padding:14px 20px 30px}
-.back{width:34px;height:34px;display:grid;place-items:center;font-size:20px;color:#13201c;margin-left:-6px}
-.s6 h4{font-size:20px;font-weight:800;color:#13201c;text-align:center;margin-top:58px}
-.s6 .sub{text-align:center}
-.vopts{margin-top:26px;display:flex;flex-direction:column;gap:11px}
-.vo{height:50px;border-radius:12px;background:#eef1f2!important;color:#1d2b27!important;font-weight:600!important;font-size:13.5px!important;display:flex!important;align-items:center;justify-content:center;gap:10px}
-.vo .ic{font-size:20px}
-.vo.yes{background:var(--green)!important;color:#fff!important}
-.meta{margin-top:20px;font-size:11px;color:#5f6f69;display:flex;align-items:center;justify-content:center;gap:6px}
-.meta .ic{font-size:14px}
-
-/* s7 updated map */
-.legend{position:absolute;top:10px;right:10px;background:#fff;border-radius:10px;box-shadow:0 6px 16px -6px rgba(0,0,0,.3);padding:8px 10px;display:grid;gap:6px;font-size:10px;font-weight:600;color:#26322e}
-.legend div{display:flex;align-items:center;gap:7px}
-.dot{width:18px;height:18px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:11px}
+/* 2 / 7 map screens */
+.trip{position:absolute;z-index:5;left:14px;right:14px;top:calc(env(safe-area-inset-top,0px) + 92px);background:#fff;border-radius:18px;box-shadow:0 10px 26px -10px rgba(0,0,0,.3);padding:14px 16px;display:flex;gap:12px;align-items:center}
+.trip .ic{font-size:26px;color:var(--green)}
+.trip b{display:block;font-size:20px;font-weight:800}
+.trip span{display:block;font-size:13.5px;color:var(--muted);margin-top:1px}
+.report{min-height:76px;font-size:21px;border-radius:20px}
+.legend{position:absolute;z-index:5;right:14px;top:calc(env(safe-area-inset-top,0px) + 92px);background:#fff;border-radius:14px;box-shadow:0 8px 20px -8px rgba(0,0,0,.3);padding:10px 12px;display:grid;gap:7px;font-size:12px;font-weight:700}
+.legend div{display:flex;align-items:center;gap:8px}
+.dot{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:12px}
 .dot.red{background:var(--red)}.dot.orange{background:var(--orange)}.dot.yellow{background:var(--yellow);color:var(--yellow-ink)}
-.toast{position:absolute;left:12px;bottom:14px;max-width:210px;background:#fff;border-radius:12px;box-shadow:0 6px 16px -6px rgba(0,0,0,.3);padding:8px 11px;font-size:11px;font-weight:700;color:var(--green-d);display:flex;gap:7px;align-items:center;line-height:1.25}
-.toast .ic{font-size:16px;flex:none}
+.toast{background:#fff;border-radius:16px;box-shadow:0 8px 22px -10px rgba(0,0,0,.3);padding:12px 14px;display:flex;gap:10px;align-items:center;font-size:15px;font-weight:800;color:var(--green-d)}
+.toast .ic{font-size:22px}
 .toast.grey{color:#33433e}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.duo .big{min-height:56px;font-size:16px}
+
+/* 3 report: only three colours */
+.s3{padding:calc(env(safe-area-inset-top,0px) + 64px) 14px calc(env(safe-area-inset-bottom,0px) + 10px);gap:12px}
+.s3 h1{font-size:26px;font-weight:800;text-align:center;margin:4px 0 2px;letter-spacing:-.02em}
+.cat{flex:1;border-radius:22px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:#fff;text-align:center;padding:12px;transition:transform .1s}
+.cat:active{transform:scale(.98)}
+.cat .ic{font-size:clamp(44px,8vh,64px)}
+.cat b{font-size:clamp(20px,3.2vh,26px);font-weight:800;letter-spacing:.02em;text-transform:uppercase}
+.cat.red{background:var(--red)}.cat.orange{background:var(--orange)}.cat.yellow{background:var(--yellow);color:var(--yellow-ink)}
+
+/* 4 confirmation */
+.s4 .map{bottom:auto;height:46%}
+.sheet{position:absolute;left:0;right:0;bottom:0;top:42%;background:#fff;border-radius:28px 28px 0 0;box-shadow:0 -10px 30px -16px rgba(0,0,0,.35);padding:30px 22px calc(env(safe-area-inset-bottom,0px) + 18px);display:flex;flex-direction:column;align-items:center;text-align:center}
+.ok{width:76px;height:76px;border-radius:50%;background:var(--green-b);color:#fff;display:grid;place-items:center;font-size:40px;margin-top:-68px;box-shadow:0 0 0 8px #fff}
+.sheet h1{font-size:26px;font-weight:800;letter-spacing:-.02em;margin:16px 0 6px}
+.meta{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:10px}
+.meta span{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:700;background:#f3f6f4;border-radius:999px;padding:7px 12px}
+.meta .ic{font-size:16px;color:var(--green)}
+.sheet p{font-size:15px;color:var(--body);margin:14px 0 0;line-height:1.4}
+.sheet .big{margin-top:auto}
+
+/* 5 alert (other rider) */
+.s5{background:var(--night)}
+.s5 .map{opacity:.55;filter:saturate(.6)}
+.alert{position:absolute;left:12px;right:12px;bottom:calc(env(safe-area-inset-bottom,0px) + 12px);background:var(--night-2);color:#fff;border-radius:26px;padding:20px 18px 16px;display:grid;gap:10px;box-shadow:0 20px 40px -20px #000}
+.ahead{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;color:#c6d3ce}
+.abadge{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:26px;color:#fff}
+.alert h1{font-size:30px;line-height:1.1;font-weight:800;margin:4px 0 0;letter-spacing:-.02em}
+.dist{font-size:20px;font-weight:700;color:#e6efe9}
+.play{justify-self:start;display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:700;background:var(--night-3);color:#d9e3df;border-radius:999px;padding:8px 13px}
+.play .ic{font-size:17px;color:#7fd6a4}
+.play.on .ic{animation:blink 1s infinite}
+@keyframes blink{50%{opacity:.3}}
+.dk{background:var(--night-3);color:#fff}
+.pulse{transform-box:fill-box;transform-origin:center;animation:pulse 1.8s ease-out infinite}
+@keyframes pulse{0%{transform:scale(.55);opacity:.55}100%{transform:scale(1.3);opacity:0}}
+
+/* 6 verify */
+.s6{gap:12px}
+.s6 h1{font-size:28px;font-weight:800;text-align:center;letter-spacing:-.02em;margin:6vh 0 0}
+.s6 .sub{text-align:center;color:var(--muted);font-size:15px;margin:0 0 8px}
+.vo{flex:1;max-height:120px;border-radius:20px;display:flex;align-items:center;justify-content:center;gap:12px;font-size:20px;font-weight:800}
+.vo .ic{font-size:30px}
+.vo.yes{background:var(--green);color:#fff}
+.vo.no{background:#eef1f2;color:#1d2b27}
+.s6 .note{text-align:center;font-size:13px;color:var(--muted);display:flex;gap:6px;justify-content:center;align-items:center}
+
+/* labels on map */
+.mlabel text{font-size:11px;font-weight:600;fill:#4b5853;paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round}
+.mlabel.strong text{font-size:13.5px;font-weight:800;fill:#26322e}
+
+/* 8 about (scrolling) */
+.s8{overflow-y:auto;-webkit-overflow-scrolling:touch;background:#fff}
+.about{padding:calc(env(safe-area-inset-top,0px) + 70px) 22px calc(env(safe-area-inset-bottom,0px) + 30px);display:grid;gap:26px}
+.about header{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+.about header svg{width:74px}
+.about h2{font-size:13px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--green);margin:0 0 8px}
+.about p{margin:0;font-size:15px;line-height:1.55;color:var(--body)}
+.quote{background:var(--mint);border-radius:18px;padding:18px;font-size:18px;font-weight:700;line-height:1.38;color:var(--ink)}
+.flist{display:grid;gap:8px;list-style:none;padding:0;margin:0}
+.flist li{display:flex;gap:12px;align-items:flex-start;padding:12px;border-radius:14px;background:#f7faf8}
+.flist .fi{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;font-size:21px;color:#fff;flex:none}
+.flist b{display:block;font-size:15px;color:var(--ink)}
+.flist span{font-size:13.5px;color:var(--body);line-height:1.4;display:block;margin-top:2px}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:8px;counter-reset:s}
+.steps li{display:flex;gap:12px;align-items:center;font-size:14.5px;font-weight:600;color:var(--ink);counter-increment:s}
+.steps li::before{content:counter(s);width:28px;height:28px;border-radius:50%;background:var(--mint);color:var(--green-d);font-weight:800;font-size:13px;display:grid;place-items:center;flex:none}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chips span{font-size:13px;font-weight:700;border:1.5px solid var(--mint-2);border-radius:999px;padding:5px 11px;color:var(--ink)}
+.hyp{background:#0f3b2c;color:#d7eadf;border-radius:18px;padding:20px}
+.hyp b{display:block;color:#fff;font-size:18px;line-height:1.35;margin-bottom:10px}
+.hyp p{color:#cfe3d7}
+.foot{font-size:12.5px;color:var(--muted);text-align:center}
 </style>
-
-<!-- ============ HEADER ============ -->
-</head><body>
-<header class="top">
-  <div class="wrap">
-    <a class="brand" href="#top" aria-label="RiderSafe AI home"><span data-logo></span><span>Rider<span>Safe AI</span></span></a>
-    <nav class="nav" aria-label="Sections">
-      <a href="#concept">Concept</a>
-      <a href="#features">Features</a>
-      <a href="#how">How it works</a>
-      <a href="#screens">Screens</a>
-      <a href="#stakeholders">Stakeholders</a>
-      <a href="#pilot">Pilot</a>
-      <a href="#next">Next steps</a>
-    </nav>
-    <a class="btn btn-p" href="#demo"><span data-ic="tap"></span>Try the prototype</a>
+</head>
+<body>
+<div id="app">
+  <div class="bar" id="bar">
+    <button class="iconbtn" id="backBtn" aria-label="Back" hidden></button>
+    <nav class="dots" id="dots" aria-label="Screens"></nav>
+    <button class="iconbtn" id="aboutBtn" aria-label="About the project"></button>
   </div>
-</header>
+  <div class="who" id="who" hidden></div>
 
-<main id="top">
-<!-- ============ HERO ============ -->
-<section class="hero">
-  <div class="wrap">
+  <!-- 1 Welcome -->
+  <section class="scr s1 pad" data-n="1">
+    <div class="brand"><span data-logo></span><div class="word">Rider<span>Safe AI</span></div><div class="tag" data-t="tag"></div></div>
     <div>
-      <span class="chip"><span data-ic="clipboard"></span>Final prototype concept · ADA5111</span>
-      <h1 class="lockup"><span data-logo="lg"></span><span class="word">Rider<span>Safe AI</span></span></h1>
-      <p class="tagline">Report together. Navigate smarter. Ride safer.</p>
-      <p class="lead">A multilingual, community-powered navigation and safety app for international food-delivery riders in Melbourne.</p>
-      <div class="badges">
-        <div class="badge"><span data-ic="shield"></span>Safer rides</div>
-        <div class="badge"><span data-ic="users"></span>Stronger community</div>
-        <div class="badge"><span data-ic="pin"></span>Smoother deliveries</div>
-        <div class="badge"><span data-ic="globe"></span>A safer city</div>
-      </div>
-      <div class="cta-row">
-        <a class="btn btn-p" href="#demo">Try the live prototype<span data-ic="arrowR"></span></a>
-        <a class="btn btn-o" href="#screens">See all seven screens</a>
-      </div>
+      <div class="lbl" data-t="chooseLang"></div>
+      <div class="langs" id="langs"></div>
+      <div class="row"><div><b data-t="audio"></b><small data-t="audioSub"></small></div><button class="sw on" id="audioSw" role="switch" aria-checked="true"><i></i></button></div>
     </div>
-    <div class="hero-art" aria-label="Navigation screen and the alert a nearby rider receives" role="img">
-      <div class="pfit" data-fit="0.9" data-span="562"><div class="hero-phones" id="heroPhones"></div></div>
-    </div>
-  </div>
-</section>
+    <button class="big g" data-go="2"><span data-t="start"></span><span data-ic="arrowR"></span></button>
+  </section>
 
-<!-- ============ CONCEPT ============ -->
-<section class="sec tint" id="concept">
-  <div class="wrap">
-    <div class="sec-head">
-      <div class="eyebrow">The concept</div>
-      <h2>Live road reports from riders, delivered in each rider's language</h2>
-      <p class="intro">RiderSafe AI is a proposed navigation and safety platform. Riders quickly report changing road conditions such as hazards, blocked cycling lanes and congestion. Reports are tied to a location, shared with nearby riders and checked by the community, then used for timely visual and audio alerts and safer route suggestions.</p>
+  <!-- 2 Navigation -->
+  <section class="scr" data-n="2">
+    <div class="map" data-map="nav"></div>
+    <div class="trip"><span data-ic="bike"></span><div><b data-t="deliveryIn"></b><span data-t="to"></span></div></div>
+    <div class="bottom"><button class="big g report" data-go="3"><span data-ic="alert"></span><span data-t="reportBtn"></span></button></div>
+  </section>
+
+  <!-- 3 Report: three colours only -->
+  <section class="scr s3" data-n="3">
+    <h1 data-t="what"></h1>
+    <button class="cat red" data-cat="danger"><span data-ic="alert"></span><b data-t="danger"></b></button>
+    <button class="cat orange" data-cat="lane"><span data-ic="barrier"></span><b data-t="lane"></b></button>
+    <button class="cat yellow" data-cat="cong"><span data-ic="car"></span><b data-t="cong"></b></button>
+    <button class="big ghost" data-go="2" data-t="cancel"></button>
+  </section>
+
+  <!-- 4 Confirmation -->
+  <section class="scr s4" data-n="4">
+    <div class="map" data-map="confirm"></div>
+    <div class="sheet">
+      <div class="ok"><span data-ic="check"></span></div>
+      <h1 id="repTitle"></h1>
+      <div class="meta"><span><span data-ic="pin"></span><b data-t="eliz"></b></span><span><span data-ic="clock"></span><b data-t="now"></b></span></div>
+      <p data-t="nearby"></p>
+      <button class="big g" data-go="5" data-t="done"></button>
     </div>
-    <div class="concept">
-      <div class="vp">
-        <div class="eyebrow">Value proposition</div>
-        <blockquote>“RiderSafe AI helps international food-delivery riders navigate Melbourne more safely by turning <mark>real-time rider hazard reports</mark> into <mark>multilingual alerts and route updates</mark>.”</blockquote>
-        <p class="body">The design keeps phone interaction to a minimum while riders are moving, so a report takes one tap and an alert can be heard rather than read.</p>
+  </section>
+
+  <!-- 5 Alert for a nearby rider -->
+  <section class="scr s5" data-n="5">
+    <div class="map" data-map="alert"></div>
+    <div class="alert">
+      <div class="ahead"><span class="abadge" id="alertBadge"></span><span>RiderSafe AI</span></div>
+      <h1 id="alertTitle"></h1>
+      <div class="dist" data-t="dist"></div>
+      <button class="play" id="playBtn"><span data-ic="vol"></span><span data-t="play"></span></button>
+      <button class="big g" data-go="7" data-route="safer" data-t="safer"></button>
+      <button class="big dk" data-go="6" data-t="verifyBtn"></button>
+    </div>
+  </section>
+
+  <!-- 6 Verification -->
+  <section class="scr s6 pad" data-n="6">
+    <h1 id="verifyQ"></h1>
+    <p class="sub" data-t="help"></p>
+    <button class="vo yes" data-verify="yes"><span data-ic="thumb"></span><span id="yesTxt"></span></button>
+    <button class="vo no" data-verify="clear"><span data-ic="check"></span><span data-t="clear"></span></button>
+    <button class="vo no" data-verify="unsure"><span data-ic="x"></span><span data-t="notsure"></span></button>
+    <p class="note"><span data-ic="users"></span><span data-t="meta"></span></p>
+  </section>
+
+  <!-- 7 Updated map -->
+  <section class="scr" data-n="7">
+    <div class="map" data-map="updated"></div>
+    <div class="legend" id="legend"></div>
+    <div class="bottom">
+      <div class="toast" id="toast"></div>
+      <div class="duo"><button class="big grey" id="restartBtn"><span data-ic="refresh"></span><span data-t="restart"></span></button><button class="big g" data-go="8"><span data-t="aboutBtn"></span><span data-ic="arrowR"></span></button></div>
+    </div>
+  </section>
+
+  <!-- 8 About the project (concept & features, at the end) -->
+  <section class="scr s8" data-n="8">
+    <div class="about">
+      <header><span data-logo></span><div class="word">Rider<span>Safe AI</span></div><div class="tag">Report together. Navigate smarter. Ride safer.</div></header>
+
+      <div>
+        <h2>The concept</h2>
+        <p class="quote">RiderSafe AI helps international food-delivery riders navigate Melbourne more safely by turning real-time rider hazard reports into multilingual alerts and route updates.</p>
       </div>
-      <div class="user">
-        <h3>Problem and primary user</h3>
-        <div class="who"><div class="av"><span data-ic="bike"></span></div><div><b>International food-delivery riders in Melbourne</b><span>Riding bicycles, e-bikes and motorbikes through the CBD</span></div></div>
-        <ul class="needs">
-          <li><span data-ic="pin"></span>Often unfamiliar with local road conditions</li>
-          <li><span data-ic="languages"></span>May face language barriers with English-only information</li>
-          <li><span data-ic="clock"></span>Need timely road information while completing deliveries</li>
+
+      <div>
+        <h2>Why it is so simple</h2>
+        <p>Riders on the road have very little attention to spare for a screen. So every screen does one job: reporting is one tap on one of three colours, and alerts can be heard instead of read.</p>
+      </div>
+
+      <div>
+        <h2>Core features</h2>
+        <ul class="flist">
+          <li><span class="fi" style="background:var(--red)" data-ic="alert"></span><div><b>Danger / Hazard</b><span>Crash, dangerous intersection, roadworks. Nearby riders are warned and rerouting is considered.</span></div></li>
+          <li><span class="fi" style="background:var(--orange)" data-ic="barrier"></span><div><b>Lane / Path Blocked</b><span>Blocked bike lane, construction, temporary closure. The spot is marked and an alternative suggested.</span></div></li>
+          <li><span class="fi" style="background:var(--yellow);color:var(--yellow-ink)" data-ic="car"></span><div><b>Congestion</b><span>Heavy traffic or delivery-zone congestion. Route conditions update and another route is suggested.</span></div></li>
+          <li><span class="fi" style="background:var(--green)" data-ic="vol"></span><div><b>Multilingual audio</b><span>Short spoken warnings in the rider's chosen language.</span></div></li>
+          <li><span class="fi" style="background:var(--ink)" data-ic="users"></span><div><b>Community verification</b><span>“Still blocked” or “Clear now” keeps reports accurate and removes outdated ones.</span></div></li>
         </ul>
-        <p class="challenge"><b>Design challenge:</b> the problem is not simply navigation. It is how to give riders specific, changing road-condition information without creating extra distraction.</p>
       </div>
-    </div>
-  </div>
-</section>
 
-<!-- ============ FEATURES ============ -->
-<section class="sec" id="features">
-  <div class="wrap">
-    <div class="sec-head">
-      <div class="eyebrow">Core features</div>
-      <h2>Three report types, plus audio alerts and community checks</h2>
-      <p class="intro">The three colour-coded report types cover what riders meet on the road. Multilingual audio and community verification keep that information usable and accurate.</p>
-    </div>
-    <div class="feats">
-      <article class="feat">
-        <div class="fhead f-red"><span data-ic="alert"></span><h3>Danger / Hazard<small>Immediate safety issues</small></h3></div>
-        <dl class="fbody">
-          <div class="kv"><dt>Example</dt><dd>Crash, dangerous intersection, roadworks</dd></div>
-          <div class="kv"><dt>System</dt><dd>Warns nearby riders and considers rerouting</dd></div>
-        </dl>
-      </article>
-      <article class="feat">
-        <div class="fhead f-orange"><span data-ic="barrier"></span><h3>Lane / Path Blocked<small>An obstructed cycling route</small></h3></div>
-        <dl class="fbody">
-          <div class="kv"><dt>Example</dt><dd>Blocked bike lane, construction, temporary closure</dd></div>
-          <div class="kv"><dt>System</dt><dd>Marks the location and suggests an alternative</dd></div>
-        </dl>
-      </article>
-      <article class="feat">
-        <div class="fhead f-yellow"><span data-ic="car"></span><h3>Congestion<small>Significant delay</small></h3></div>
-        <dl class="fbody">
-          <div class="kv"><dt>Example</dt><dd>Heavy traffic or delivery-zone congestion</dd></div>
-          <div class="kv"><dt>System</dt><dd>Updates route conditions and suggests another route</dd></div>
-        </dl>
-      </article>
-      <article class="feat wide">
-        <div class="fhead f-mint"><span data-ic="vol"></span><h3>Multilingual audio<small>Less reading while riding</small></h3></div>
-        <dl class="fbody">
-          <div class="kv"><dt>Example</dt><dd>An alert spoken in the rider's selected language</dd></div>
-          <div class="kv"><dt>System</dt><dd>Delivers short spoken warnings</dd></div>
-        </dl>
-      </article>
-      <article class="feat wide">
-        <div class="fhead f-mint"><span data-ic="usercheck"></span><h3>Community verification<small>More reliable reports</small></h3></div>
-        <dl class="fbody">
-          <div class="kv"><dt>Example</dt><dd>“Still blocked” or “Clear now”</dd></div>
-          <div class="kv"><dt>System</dt><dd>Raises confidence, or removes outdated reports</dd></div>
-        </dl>
-      </article>
-    </div>
-  </div>
-</section>
-
-<!-- ============ HOW IT WORKS ============ -->
-<section class="sec tint" id="how">
-  <div class="wrap">
-    <div class="sec-head">
-      <div class="eyebrow">How the system works</div>
-      <h2>From one tap to a safer route</h2>
-      <p class="intro">Every report follows the same seven steps, so the shared map stays current for every rider.</p>
-    </div>
-    <ol class="flow">
-      <li><div class="node"><span data-ic="eye"></span><em>1</em></div><p>Rider detects a road issue</p></li>
-      <li><div class="node"><span data-ic="tap"></span><em>2</em></div><p>Taps one quick-report button</p></li>
-      <li><div class="node"><span data-ic="pin"></span><em>3</em></div><p>Location and time are recorded</p></li>
-      <li><div class="node"><span data-ic="layers"></span><em>4</em></div><p>Report enters the shared hazard map</p></li>
-      <li><div class="node"><span data-ic="bell"></span><em>5</em></div><p>Nearby riders receive an alert</p></li>
-      <li><div class="node"><span data-ic="usercheck"></span><em>6</em></div><p>Other riders confirm or clear it</p></li>
-      <li><div class="node"><span data-ic="route"></span><em>7</em></div><p>A safer alternative route is recommended</p></li>
-    </ol>
-    <p class="loopnote"><span data-ic="refresh"></span>Confirmations keep a report on the map. “Clear now” removes it, so outdated information doesn't linger.</p>
-  </div>
-</section>
-
-<!-- ============ SCREENS ============ -->
-<section class="sec" id="screens">
-  <div class="wrap">
-    <div class="sec-head">
-      <div class="eyebrow">Seven-screen prototype</div>
-      <h2>One complete journey, from onboarding to an updated map</h2>
-      <p class="intro">Select any screen to open it in the live prototype below.</p>
-      <p class="swipe-hint"><span data-ic="arrowR"></span>Swipe to see all screens</p>
-    </div>
-    <div class="board" id="board"></div>
-  </div>
-</section>
-
-<!-- ============ LIVE DEMO ============ -->
-<section class="sec tint" id="demo">
-  <div class="wrap">
-    <div class="sec-head">
-      <div class="eyebrow">Live prototype</div>
-      <h2>Try the journey yourself</h2>
-      <p class="intro">Report a road problem as Rider A, then see what a nearby rider receives and how the shared map updates. Change the app language to hear alerts in English, Chinese or Japanese.</p>
-    </div>
-    <div class="demo">
-      <div class="demo-stage">
-        <div class="rider-chip" id="riderChip"><span class="cdot"></span><span>Rider A · reporting</span></div>
-        <div class="pfit" data-fit="1" data-span="316" id="demoFit"></div>
+      <div>
+        <h2>How it works</h2>
+        <ol class="steps">
+          <li>Rider detects a road issue</li>
+          <li>Taps one quick-report button</li>
+          <li>Location and time are recorded</li>
+          <li>Report enters the shared hazard map</li>
+          <li>Nearby riders receive an alert</li>
+          <li>Other riders confirm or clear it</li>
+          <li>A safer alternative route is recommended</li>
+        </ol>
       </div>
-      <div class="panel">
-        <div class="panel-row">
-          <label for="demoLang">App language</label>
-          <div class="selwrap"><select id="demoLang"></select><span data-ic="chev"></span></div>
-        </div>
-        <ol class="steps" id="steps"></ol>
-        <div class="ctrl">
-          <button type="button" class="btn btn-o" id="prevBtn"><span data-ic="arrowL"></span>Back</button>
-          <button type="button" class="btn btn-p" id="nextBtn">Next<span data-ic="arrowR"></span></button>
-          <button type="button" class="btn btn-o" id="resetBtn"><span data-ic="refresh"></span>Restart</button>
-        </div>
-        <p class="note"><span data-ic="vol"></span><span>Audio alerts use your browser's built-in voices and play when “Audio alerts” is on. Voices for some languages depend on your device.</span></p>
-        <p class="sr" aria-live="polite" id="live"></p>
+
+      <div>
+        <h2>Melbourne CBD pilot</h2>
+        <p>The pilot starts in the CBD only. A rider reports a construction-blocked bike lane without help; a second rider receives the alert and decides how to respond.</p>
+        <div class="chips" style="margin-top:12px"><span>Task completion</span><span>Reporting time</span><span>Category understanding</span><span>Alert comprehension</span><span>Perceived usefulness</span><span>Trust in reports</span><span>Route decision change</span></div>
       </div>
-    </div>
-  </div>
-</section>
 
-<!-- ============ STAKEHOLDERS ============ -->
-<section class="sec" id="stakeholders">
-  <div class="wrap">
-    <div class="sec-head">
-      <div class="eyebrow">Stakeholder value</div>
-      <h2>Who contributes, and what they could gain</h2>
-    </div>
-    <div class="tablewrap">
-      <table>
-        <thead><tr><th scope="col">Stakeholder</th><th scope="col">Role</th><th scope="col">Contribution</th><th scope="col">Potential value</th></tr></thead>
-        <tbody>
-          <tr><td>International delivery riders</td><td data-l="Role"><span class="role primary">Primary users</span></td><td data-l="Contribution">Hazard reports and user feedback</td><td data-l="Potential value">Better awareness of changing route conditions</td></tr>
-          <tr><td>Delivery platforms</td><td data-l="Role"><span class="role">Potential partners</span></td><td data-l="Contribution">Pilot access and rider engagement</td><td data-l="Potential value">Potential rider-safety and delivery-reliability benefits</td></tr>
-          <tr><td>City / road-safety stakeholders</td><td data-l="Role"><span class="role">Ecosystem stakeholder</span></td><td data-l="Contribution">Safety expertise and possible pilot support</td><td data-l="Potential value">Insight into recurring rider-reported hazards</td></tr>
-          <tr><td>Rider communities</td><td data-l="Role"><span class="role">Community partner</span></td><td data-l="Contribution">Recruitment, testing and verification</td><td data-l="Potential value">Shared safety knowledge</td></tr>
-          <tr><td>Cycling organisations</td><td data-l="Role"><span class="role">Advisory stakeholder</span></td><td data-l="Contribution">Cycling-safety expertise</td><td data-l="Potential value">Evidence and feedback on infrastructure issues</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
-
-<!-- ============ PILOT & TESTING ============ -->
-<section class="sec tint" id="pilot">
-  <div class="wrap">
-    <div class="sec-head">
-      <div class="eyebrow">Pilot and testing</div>
-      <h2>Start small, in Melbourne CBD</h2>
-      <p class="intro">The first pilot is limited to the CBD instead of a city-wide launch, so the team can watch how riders actually use the reports and alerts.</p>
-    </div>
-    <div class="pt">
-      <article class="card">
-        <h3><span data-ic="target"></span>Proposed Melbourne CBD pilot</h3>
-        <div class="pilotmap" id="pilotMap"><span class="zone"><i></i>Pilot zone · Hoddle Grid</span></div>
-        <div class="sub-h">The pilot tests whether riders</div>
-        <ul class="tests">
-          <li><span data-ic="check"></span>Understand the interface</li>
-          <li><span data-ic="check"></span>Use the reporting system</li>
-          <li><span data-ic="check"></span>Trust community-generated information</li>
-          <li><span data-ic="check"></span>Notice the alerts</li>
-          <li><span data-ic="check"></span>Make appropriate route decisions after an alert</li>
-        </ul>
-      </article>
-      <article class="card">
-        <h3><span data-ic="clipboard"></span>Prototype testing scenario</h3>
-        <div class="story">
-          <div class="beat"><div class="who a">A</div><div><b>Rider A reports, unassisted</b><p>While completing a delivery in the CBD, the rider finds a cycling lane blocked by construction and reports it without help.</p></div></div>
-          <div class="beat"><div class="who b">B</div><div><b>Rider B receives the alert</b><p>A second rider gets the alert and decides how to respond: keep the route, or take the safer alternative.</p></div></div>
-        </div>
-        <div class="sub-h">What we measure</div>
-        <div class="metrics">
-          <span>Task completion</span><span>Reporting time</span><span>Understanding of the three categories</span><span>Alert comprehension</span><span>Perceived usefulness</span><span>Trust in rider-generated reports</span><span>Change in route decision</span>
-        </div>
-      </article>
-    </div>
-  </div>
-</section>
-
-<!-- ============ HYPOTHESIS ============ -->
-<section class="band" id="hypothesis">
-  <div class="wrap">
-    <div class="eyebrow">Key hypothesis to test</div>
-    <p class="q">Can <em>community-generated, real-time hazard information</em> help international food-delivery riders make better-informed and potentially safer route decisions?</p>
-    <div class="band-grid">
-      <div class="bcard">
-        <h3><span data-ic="info"></span>Claims we are not making</h3>
-        <p>The prototype does not claim to have reduced crashes or proven safety outcomes. The pilot is designed to test usability, rider behaviour, trust, perceived safety and route decisions.</p>
+      <div class="hyp">
+        <b>Can community-generated, real-time hazard information help international delivery riders make better-informed and potentially safer route decisions?</b>
+        <p>We do not claim reduced crashes or proven safety outcomes. The pilot tests usability, behaviour, trust, perceived safety and route decisions, and whether riders prefer a standalone app or a feature inside a delivery platform.</p>
       </div>
-      <div class="bcard">
-        <h3><span data-ic="layers"></span>Which format do riders prefer?</h3>
-        <div class="formats">
-          <div><span data-ic="phone"></span>A standalone app</div>
-          <div><span data-ic="box"></span>A feature inside an existing delivery platform</div>
-          <div><span data-ic="grid"></span>Another form of service</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- ============ NEXT STEPS ============ -->
-<section class="sec" id="next">
-  <div class="wrap">
-    <div class="sec-head">
-      <div class="eyebrow">Next steps</div>
-      <h2>From clickable prototype to a pilot proposal</h2>
+      <button class="big g" data-go="1"><span data-ic="refresh"></span>Try the prototype again</button>
+      <p class="foot">ADA5111 · Final prototype concept · Map is illustrative</p>
     </div>
-    <ol class="next">
-      <li>Refine the clickable prototype</li>
-      <li>Test it with representative riders</li>
-      <li>Document what users understand without explanation</li>
-      <li>Revise unclear screens</li>
-      <li>Confirm stakeholder roles and value</li>
-      <li>Define measurable pilot indicators</li>
-      <li>Prepare a realistic Melbourne CBD implementation proposal within the project budget</li>
-    </ol>
-  </div>
-</section>
-</main>
+  </section>
+</div>
 
-<!-- ============ FOOTER ============ -->
-<footer class="foot">
-  <div class="wrap">
-    <div class="footcard">
-      <div class="brandbig"><span data-logo="lg"></span><span class="word">Rider<span>Safe AI</span></span><span class="tl">Report together.<br>Navigate smarter. Ride safer.</span></div>
-      <ul class="checks" id="footChecks"></ul>
-      <div class="sky"><svg class="skyline" viewBox="0 0 300 80" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" aria-hidden="true"><path id="skyPath"/></svg><span>Melbourne rides better together.</span></div>
-    </div>
-    <div class="legal"><span>RiderSafe AI · Final strengthened prototype concept · ADA5111</span><span>Concept prototype for testing. Map and data shown are illustrative.</span></div>
-  </div>
-</footer>
-
-<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs id="mapDefs"></defs></svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs id="mapDefs"></defs></svg>
 
 <script>
 (function(){
 "use strict";
-
-/* ---------------- icons ---------------- */
-var I = {
-  alert:'<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/>',
-  bang:'<path d="M12 5.5v8.5"/><path d="M12 18.6v.1"/>',
-  barrier:'<rect x="2.5" y="7" width="19" height="7" rx="1"/><path d="M7.5 7 4 14M13 7l-3.5 7M18.5 7 15 14M6 14v6M18 14v6M4.5 20h3M16.5 20h3M6 7V4.5M18 7V4.5"/>',
-  car:'<path d="m21 8-2 2-1.5-3.7A2 2 0 0 0 15.6 5H8.4a2 2 0 0 0-1.9 1.3L5 10 3 8"/><path d="M7 14h.01M17 14h.01"/><rect width="18" height="8" x="3" y="10" rx="2"/><path d="M5 18v2M19 18v2"/>',
-  check:'<path d="M20 6 9 17l-5-5"/>',
-  x:'<path d="M18 6 6 18M6 6l12 12"/>',
-  arrowR:'<path d="M5 12h14M13 6l6 6-6 6"/>',
-  arrowL:'<path d="M19 12H5M11 18l-6-6 6-6"/>',
-  chev:'<path d="m6 9 6 6 6-6"/>',
-  pin:'<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>',
-  clock:'<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
-  users:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>',
-  usercheck:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="m16 11 2 2 4-4"/>',
-  thumb:'<path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"/>',
-  home:'<path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
-  map:'<path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2z"/><path d="M9 4v14M15 6v14"/>',
-  file:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M12 12v3.5M12 18.5v.01"/>',
-  user:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
-  locate:'<circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.5" fill="currentColor"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>',
-  vol:'<path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/>',
-  volx:'<path d="M11 5 6 9H2v6h4l5 4z"/><path d="m22 9-6 6M16 9l6 6"/>',
-  shield:'<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/>',
-  globe:'<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/>',
-  bike:'<circle cx="5.5" cy="16.5" r="3.5"/><circle cx="18.5" cy="16.5" r="3.5"/><path d="M5.5 16.5 9 9.5h6.5l3 7M9 9.5l3 7 3.5-7M7.5 7h3M14.5 6.5h2l-1 3"/>',
-  ebike:'<circle cx="5.5" cy="16.5" r="3.5"/><circle cx="18.5" cy="16.5" r="3.5"/><path d="M5.5 16.5 9 9.5h6.5l3 7M9 9.5l3 7 3.5-7M14.5 6.5h2l-1 3"/><path d="M10.5 2.5 8.6 5.4h2.6L9.4 8.2"/>',
-  moto:'<circle cx="5.5" cy="17" r="3"/><circle cx="18.5" cy="17" r="3"/><path d="M8.5 17h6.5l2-10.5h2.5M15 6.5h2M3 12.5h7.5l-1.8 4.5M11 12.5l4 4.5"/>',
-  carside:'<path d="M3 16.5V12l2.2-4.3A2 2 0 0 1 7 6.5h8.6a2 2 0 0 1 1.6.8L20 11l1 .7v4.8h-1.5"/><path d="M15.5 16.5h-6.8"/><circle cx="6.8" cy="16.6" r="2"/><circle cx="17.5" cy="16.6" r="2"/><path d="M4.4 11.2H20"/>',
-  eye:'<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
-  tap:'<path d="M18 11V6a2 2 0 0 0-4 0v0"/><path d="M14 10V4a2 2 0 0 0-4 0v2"/><path d="M10 10.5V6a2 2 0 0 0-4 0v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-6-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/>',
-  layers:'<path d="m12 2 10 5-10 5L2 7z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/>',
-  bell:'<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>',
-  route:'<circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/>',
-  languages:'<path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/>',
-  refresh:'<path d="M3 12a9 9 0 0 1 15.5-6.2L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15.5 6.2L3 16"/><path d="M3 21v-5h5"/>',
-  target:'<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
-  clipboard:'<rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/>',
-  info:'<circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>',
-  phone:'<rect x="5" y="2" width="14" height="20" rx="2.5"/><path d="M11 18h2"/>',
-  box:'<path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="m3 8 9 5 9-5M12 13v8"/>',
-  grid:'<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>'
+var I={
+ alert:'<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/>',
+ bang:'<path d="M12 5.5v8.5"/><path d="M12 18.6v.1"/>',
+ barrier:'<rect x="2.5" y="7" width="19" height="7" rx="1"/><path d="M7.5 7 4 14M13 7l-3.5 7M18.5 7 15 14M6 14v6M18 14v6M4.5 20h3M16.5 20h3M6 7V4.5M18 7V4.5"/>',
+ car:'<path d="m21 8-2 2-1.5-3.7A2 2 0 0 0 15.6 5H8.4a2 2 0 0 0-1.9 1.3L5 10 3 8"/><path d="M7 14h.01M17 14h.01"/><rect width="18" height="8" x="3" y="10" rx="2"/><path d="M5 18v2M19 18v2"/>',
+ check:'<path d="M20 6 9 17l-5-5"/>', x:'<path d="M18 6 6 18M6 6l12 12"/>',
+ arrowR:'<path d="M5 12h14M13 6l6 6-6 6"/>', arrowL:'<path d="M19 12H5M11 18l-6-6 6-6"/>',
+ pin:'<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>',
+ clock:'<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
+ users:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>',
+ thumb:'<path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"/>',
+ vol:'<path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/>',
+ bike:'<circle cx="5.5" cy="16.5" r="3.5"/><circle cx="18.5" cy="16.5" r="3.5"/><path d="M5.5 16.5 9 9.5h6.5l3 7M9 9.5l3 7 3.5-7M7.5 7h3M14.5 6.5h2l-1 3"/>',
+ route:'<circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/>',
+ refresh:'<path d="M3 12a9 9 0 0 1 15.5-6.2L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15.5 6.2L3 16"/><path d="M3 21v-5h5"/>',
+ info:'<circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>'
 };
-function ic(n, extra){ return '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="'+(extra||2)+'" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+I[n]+'</svg>'; }
-var NAVARROW = '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11 22 2l-9 19-2-8z" fill="currentColor"/></svg>';
+function ic(n,w){return '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="'+(w||2.2)+'" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+I[n]+'</svg>';}
+function logo(){return '<svg viewBox="0 0 74 50" aria-hidden="true"><g stroke="#22a565" stroke-width="3.4" stroke-linecap="round"><path d="M4 19h13M1 26h12M6 33h8"/></g><g fill="none" stroke="#0f2a26" stroke-width="3.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="23" cy="38" r="8.6"/><circle cx="60" cy="38" r="8.6"/><path d="M23 38 31 25.5h17L60 38"/><path d="M31 25.5 39.5 38 48 25.5"/><path d="M46.5 18.5 48 25.5"/><path d="M44 18.5h5.5"/><path d="M29 22.5h6"/></g><circle cx="47.5" cy="7.5" r="4.6" fill="#0f2a26"/><path d="M33 21 43 13.5l5.5 5.2" fill="none" stroke="#0f2a26" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M33.5 21.5 41 28.5 38.5 36" fill="none" stroke="#0f2a26" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>';}
 
-/* logo: rider on a bike with speed lines */
-function logo(){
-  return '<svg class="logo" viewBox="0 0 74 50" aria-hidden="true">'+
-   '<g stroke="#22a565" stroke-width="3.4" stroke-linecap="round"><path d="M4 19h13M1 26h12M6 33h8"/></g>'+
-   '<g fill="none" stroke="#0f2a26" stroke-width="3.3" stroke-linecap="round" stroke-linejoin="round">'+
-     '<circle cx="23" cy="38" r="8.6"/><circle cx="60" cy="38" r="8.6"/>'+
-     '<path d="M23 38 31 25.5h17L60 38"/><path d="M31 25.5 39.5 38 48 25.5"/><path d="M46.5 18.5 48 25.5"/><path d="M44 18.5h5.5"/>'+
-     '<path d="M29 22.5h6"/>'+
-   '</g>'+
-   '<circle cx="47.5" cy="7.5" r="4.6" fill="#0f2a26"/>'+
-   '<path d="M33 21 43 13.5l5.5 5.2" fill="none" stroke="#0f2a26" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>'+
-   '<path d="M33.5 21.5 41 28.5 38.5 36" fill="none" stroke="#0f2a26" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>'+
-  '</svg>';
-}
-
-/* ---------------- copy ---------------- */
-var LANGS = [
-  {code:'en', name:'English', short:'EN', voice:'en-AU'},
-  {code:'zh-CN', name:'简体中文', short:'简', voice:'zh-CN'},
-  {code:'zh-TW', name:'繁體中文', short:'繁', voice:'zh-TW'},
-  {code:'ja', name:'日本語', short:'日', voice:'ja-JP'}
-];
-var D = {
- en:{tag1:'Report together.',tag2:'Navigate smarter. Ride safer.',chooseLang:'Choose your language',vehicle:'Vehicle type',bicycle:'Bicycle',ebike:'E-bike',motorbike:'Motorbike',car:'Car',audio:'Audio alerts',audioSub:'Receive voice alerts while riding',start:'Get Started',
-  deliveryIn:'Delivery in 12 min',to:'To: 123 Collins St, Melbourne',reportBtn:'Report road condition',tabHome:'Home',tabMap:'Map',tabReports:'Reports',tabProfile:'Profile',
-  mapCBD:'Melbourne CBD',mapFlag:'Flagstaff',mapFSS:'Flinders Street\nStation',mapQVM:'Queen Victoria\nMarket',
-  what:'What happened?',tapOne:'Tap one of the buttons below',danger:'DANGER / HAZARD',dangerDesc:'Crash, dangerous intersection, roadworks, etc.',lane:'LANE / PATH BLOCKED',laneDesc:'Blocked bike lane, obstruction, temporary closure, etc.',cong:'CONGESTION',congDesc:'Heavy traffic or significant delays, etc.',cancel:'Cancel',
-  rep_danger:'Hazard reported!',rep_lane:'Lane blockage reported!',rep_cong:'Congestion reported!',thanks:'Thank you for helping the rider community.',location:'Location',locVal:'Elizabeth St, Melbourne CBD',eliz:'Elizabeth St',time:'Time',now:'Just now',nearby:'Nearby riders will be alerted.',done:'Done',
-  alert_danger:'Hazard reported ahead',alert_lane:'Blocked cycling lane ahead',alert_cong:'Heavy congestion ahead',dist:'150 metres',safer:'Safer alternative available',details:'View details',play:'Play audio alert',reported:'Reported by a nearby rider · just now',
-  q_danger:'Is the hazard still there?',q_lane:'Is the lane still blocked?',q_cong:'Is it still congested?',help:'Your feedback helps the community.',yes_danger:'Yes, still there',yes_lane:'Yes, still blocked',yes_cong:'Yes, still congested',clear:'Clear now',notsure:'Not sure',meta:'Reported 2 min ago · 3 riders confirmed',
-  leg_danger:'Danger / Hazard',leg_lane:'Lane Blocked',leg_cong:'Congestion',routeSafer:'Safer route active · avoids Elizabeth St',routeRestored:'Report cleared · original route restored',
-  say_danger:'Caution. Hazard reported 150 metres ahead on Elizabeth Street. A safer route is available.',say_lane:'Caution. Cycling lane blocked 150 metres ahead on Elizabeth Street. A safer route is available.',say_cong:'Heavy congestion 150 metres ahead on Elizabeth Street. A faster route is available.'},
- 'zh-CN':{tag1:'一起上报。',tag2:'更聪明地导航，更安全地骑行。',chooseLang:'选择语言',vehicle:'车辆类型',bicycle:'自行车',ebike:'电动自行车',motorbike:'摩托车',car:'汽车',audio:'语音提醒',audioSub:'骑行时接收语音提醒',start:'开始使用',
-  deliveryIn:'12 分钟后送达',to:'送至：墨尔本 Collins St 123 号',reportBtn:'上报路况',tabHome:'首页',tabMap:'地图',tabReports:'上报',tabProfile:'我的',
-  mapCBD:'墨尔本市中心',mapFlag:'Flagstaff',mapFSS:'弗林德斯街车站',mapQVM:'维多利亚女王市场',
-  what:'发生了什么？',tapOne:'请点击下方其中一个按钮',danger:'危险 / 隐患',dangerDesc:'撞车、危险路口、道路施工等',lane:'车道 / 路径受阻',laneDesc:'自行车道被占、障碍物、临时封路等',cong:'拥堵',congDesc:'交通繁忙或严重延误等',cancel:'取消',
-  rep_danger:'已上报危险！',rep_lane:'已上报车道受阻！',rep_cong:'已上报拥堵！',thanks:'感谢你帮助骑手社区。',location:'位置',locVal:'墨尔本市中心 Elizabeth St',eliz:'Elizabeth St',time:'时间',now:'刚刚',nearby:'附近的骑手将收到提醒。',done:'完成',
-  alert_danger:'前方有危险',alert_lane:'前方自行车道受阻',alert_cong:'前方严重拥堵',dist:'150 米',safer:'有更安全的替代路线',details:'查看详情',play:'播放语音提醒',reported:'附近骑手刚刚上报',
-  q_danger:'危险是否仍然存在？',q_lane:'车道是否仍然受阻？',q_cong:'是否仍然拥堵？',help:'你的反馈对社区很有帮助。',yes_danger:'是，仍然存在',yes_lane:'是，仍然受阻',yes_cong:'是，仍然拥堵',clear:'已经畅通',notsure:'不确定',meta:'2 分钟前上报 · 3 位骑手已确认',
-  leg_danger:'危险 / 隐患',leg_lane:'车道受阻',leg_cong:'拥堵',routeSafer:'已切换更安全路线 · 避开 Elizabeth St',routeRestored:'上报已清除 · 已恢复原路线',
-  say_danger:'注意，前方150米 Elizabeth 街有危险，已为你找到更安全的路线。',say_lane:'注意，前方150米 Elizabeth 街自行车道受阻，已为你找到更安全的路线。',say_cong:'前方150米 Elizabeth 街严重拥堵，已为你找到更快的路线。'},
- 'zh-TW':{tag1:'一起回報。',tag2:'更聰明地導航，更安全地騎行。',chooseLang:'選擇語言',vehicle:'車輛類型',bicycle:'腳踏車',ebike:'電動自行車',motorbike:'機車',car:'汽車',audio:'語音提醒',audioSub:'騎行時接收語音提醒',start:'開始使用',
-  deliveryIn:'12 分鐘後送達',to:'送至：墨爾本 Collins St 123 號',reportBtn:'回報路況',tabHome:'首頁',tabMap:'地圖',tabReports:'回報',tabProfile:'我的',
-  mapCBD:'墨爾本市中心',mapFlag:'Flagstaff',mapFSS:'弗林德斯街車站',mapQVM:'維多利亞女王市場',
-  what:'發生了什麼事？',tapOne:'請點選下方其中一個按鈕',danger:'危險 / 隱患',dangerDesc:'車禍、危險路口、道路施工等',lane:'車道 / 路徑受阻',laneDesc:'自行車道被佔、障礙物、臨時封路等',cong:'壅塞',congDesc:'交通繁忙或嚴重延誤等',cancel:'取消',
-  rep_danger:'已回報危險！',rep_lane:'已回報車道受阻！',rep_cong:'已回報壅塞！',thanks:'感謝你協助騎士社群。',location:'位置',locVal:'墨爾本市中心 Elizabeth St',eliz:'Elizabeth St',time:'時間',now:'剛剛',nearby:'附近的騎士將收到提醒。',done:'完成',
-  alert_danger:'前方有危險',alert_lane:'前方自行車道受阻',alert_cong:'前方嚴重壅塞',dist:'150 公尺',safer:'有更安全的替代路線',details:'查看詳情',play:'播放語音提醒',reported:'附近騎士剛剛回報',
-  q_danger:'危險是否仍然存在？',q_lane:'車道是否仍然受阻？',q_cong:'是否仍然壅塞？',help:'你的回饋對社群很有幫助。',yes_danger:'是，仍然存在',yes_lane:'是，仍然受阻',yes_cong:'是，仍然壅塞',clear:'已經暢通',notsure:'不確定',meta:'2 分鐘前回報 · 3 位騎士已確認',
-  leg_danger:'危險 / 隱患',leg_lane:'車道受阻',leg_cong:'壅塞',routeSafer:'已切換更安全路線 · 避開 Elizabeth St',routeRestored:'回報已清除 · 已恢復原路線',
-  say_danger:'注意，前方150公尺 Elizabeth 街有危險，已為你找到更安全的路線。',say_lane:'注意，前方150公尺 Elizabeth 街自行車道受阻，已為你找到更安全的路線。',say_cong:'前方150公尺 Elizabeth 街嚴重壅塞，已為你找到更快的路線。'},
- ja:{tag1:'みんなで報告。',tag2:'賢くナビ、安全に走行。',chooseLang:'言語を選択',vehicle:'車両タイプ',bicycle:'自転車',ebike:'電動自転車',motorbike:'バイク',car:'車',audio:'音声アラート',audioSub:'走行中に音声で通知を受け取る',start:'はじめる',
-  deliveryIn:'あと12分で配達',to:'配達先：メルボルン Collins St 123',reportBtn:'道路状況を報告',tabHome:'ホーム',tabMap:'マップ',tabReports:'報告',tabProfile:'プロフィール',
-  mapCBD:'メルボルンCBD',mapFlag:'Flagstaff',mapFSS:'フリンダース・\nストリート駅',mapQVM:'クイーン・ビクトリア・\nマーケット',
-  what:'何がありましたか？',tapOne:'下のボタンを1つタップしてください',danger:'危険 / ハザード',dangerDesc:'事故、危険な交差点、道路工事など',lane:'車線 / 通路の封鎖',laneDesc:'自転車レーンの封鎖、障害物、一時通行止めなど',cong:'渋滞',congDesc:'交通量が多い、大幅な遅れなど',cancel:'キャンセル',
-  rep_danger:'危険を報告しました！',rep_lane:'車線の封鎖を報告しました！',rep_cong:'渋滞を報告しました！',thanks:'ライダーコミュニティへのご協力ありがとうございます。',location:'場所',locVal:'メルボルンCBD Elizabeth St',eliz:'Elizabeth St',time:'時刻',now:'たった今',nearby:'近くのライダーに通知されます。',done:'完了',
-  alert_danger:'この先に危険があります',alert_lane:'この先の自転車レーンが封鎖中',alert_cong:'この先で激しい渋滞',dist:'150メートル',safer:'より安全な別ルートがあります',details:'詳細を見る',play:'音声アラートを再生',reported:'近くのライダーがたった今報告',
-  q_danger:'危険はまだありますか？',q_lane:'車線はまだ封鎖されていますか？',q_cong:'まだ渋滞していますか？',help:'あなたの回答がコミュニティの役に立ちます。',yes_danger:'はい、まだあります',yes_lane:'はい、まだ封鎖中',yes_cong:'はい、まだ渋滞中',clear:'解消済み',notsure:'わからない',meta:'2分前に報告 · 3人のライダーが確認',
-  leg_danger:'危険 / ハザード',leg_lane:'車線封鎖',leg_cong:'渋滞',routeSafer:'安全なルートに変更 · Elizabeth St を回避',routeRestored:'報告を解除 · 元のルートに戻しました',
-  say_danger:'注意。150メートル先のエリザベス・ストリートで危険が報告されています。より安全なルートがあります。',say_lane:'注意。150メートル先、エリザベス・ストリートの自転車レーンが封鎖されています。より安全なルートがあります。',say_cong:'150メートル先のエリザベス・ストリートで激しい渋滞があります。より早いルートがあります。'}
+/* ---------- copy ---------- */
+var LANGS=[{c:'en',n:'English',v:'en-AU'},{c:'zh-CN',n:'简体中文',v:'zh-CN'},{c:'zh-TW',n:'繁體中文',v:'zh-TW'},{c:'ja',n:'日本語',v:'ja-JP'}];
+var D={
+en:{tag:'Report together. Navigate smarter. Ride safer.',chooseLang:'Choose your language',audio:'Audio alerts',audioSub:'Hear warnings while riding',start:'Start riding',
+ deliveryIn:'Delivery in 12 min',to:'To: 123 Collins St',reportBtn:'Report road condition',
+ what:'What happened?',danger:'Danger / Hazard',lane:'Lane blocked',cong:'Congestion',cancel:'Cancel',
+ rep_danger:'Hazard reported',rep_lane:'Lane blockage reported',rep_cong:'Congestion reported',eliz:'Elizabeth St',now:'Just now',nearby:'Thank you. Nearby riders will be alerted.',done:'Done',
+ alert_danger:'Hazard ahead',alert_lane:'Blocked cycling lane ahead',alert_cong:'Heavy congestion ahead',dist:'150 metres',play:'Play audio alert',safer:'Take safer route',verifyBtn:'Is it still there?',
+ q_danger:'Is the hazard still there?',q_lane:'Is the lane still blocked?',q_cong:'Is it still congested?',help:'Your answer helps other riders.',yes:'Yes, still there',clear:'Clear now',notsure:'Not sure',meta:'Reported 2 min ago · 3 riders confirmed',
+ leg_danger:'Danger',leg_lane:'Lane blocked',leg_cong:'Congestion',routeSafer:'Safer route active · avoids Elizabeth St',routeRestored:'Report cleared · original route restored',restart:'Restart',aboutBtn:'About',
+ riderA:'You: Rider A · reporting',riderB:'You: Rider B · 150 m away',
+ cbd:'Melbourne CBD',flag:'Flagstaff',fss:'Flinders Street\nStation',qvm:'Queen Victoria\nMarket',
+ say_danger:'Caution. Hazard reported 150 metres ahead on Elizabeth Street. A safer route is available.',say_lane:'Caution. Cycling lane blocked 150 metres ahead on Elizabeth Street. A safer route is available.',say_cong:'Heavy congestion 150 metres ahead on Elizabeth Street. A faster route is available.'},
+'zh-CN':{tag:'一起上报，更聪明地导航，更安全地骑行。',chooseLang:'选择语言',audio:'语音提醒',audioSub:'骑行时用语音听提醒',start:'开始骑行',
+ deliveryIn:'12 分钟后送达',to:'送至：Collins St 123 号',reportBtn:'上报路况',
+ what:'发生了什么？',danger:'危险 / 隐患',lane:'车道受阻',cong:'拥堵',cancel:'取消',
+ rep_danger:'已上报危险',rep_lane:'已上报车道受阻',rep_cong:'已上报拥堵',eliz:'Elizabeth St',now:'刚刚',nearby:'谢谢！附近的骑手将收到提醒。',done:'完成',
+ alert_danger:'前方有危险',alert_lane:'前方自行车道受阻',alert_cong:'前方严重拥堵',dist:'150 米',play:'播放语音提醒',safer:'走更安全的路线',verifyBtn:'情况还在吗？',
+ q_danger:'危险是否仍然存在？',q_lane:'车道是否仍然受阻？',q_cong:'是否仍然拥堵？',help:'你的回答能帮助其他骑手。',yes:'是，仍然存在',clear:'已经畅通',notsure:'不确定',meta:'2 分钟前上报 · 3 位骑手已确认',
+ leg_danger:'危险',leg_lane:'车道受阻',leg_cong:'拥堵',routeSafer:'已切换更安全路线 · 避开 Elizabeth St',routeRestored:'上报已清除 · 已恢复原路线',restart:'重新开始',aboutBtn:'项目介绍',
+ riderA:'你：骑手 A · 上报中',riderB:'你：骑手 B · 相距 150 米',
+ cbd:'墨尔本市中心',flag:'Flagstaff',fss:'弗林德斯街车站',qvm:'维多利亚女王市场',
+ say_danger:'注意，前方150米 Elizabeth 街有危险，已为你找到更安全的路线。',say_lane:'注意，前方150米 Elizabeth 街自行车道受阻，已为你找到更安全的路线。',say_cong:'前方150米 Elizabeth 街严重拥堵，已为你找到更快的路线。'},
+'zh-TW':{tag:'一起回報，更聰明地導航，更安全地騎行。',chooseLang:'選擇語言',audio:'語音提醒',audioSub:'騎行時用語音聽提醒',start:'開始騎行',
+ deliveryIn:'12 分鐘後送達',to:'送至：Collins St 123 號',reportBtn:'回報路況',
+ what:'發生了什麼事？',danger:'危險 / 隱患',lane:'車道受阻',cong:'壅塞',cancel:'取消',
+ rep_danger:'已回報危險',rep_lane:'已回報車道受阻',rep_cong:'已回報壅塞',eliz:'Elizabeth St',now:'剛剛',nearby:'謝謝！附近的騎士將收到提醒。',done:'完成',
+ alert_danger:'前方有危險',alert_lane:'前方自行車道受阻',alert_cong:'前方嚴重壅塞',dist:'150 公尺',play:'播放語音提醒',safer:'走更安全的路線',verifyBtn:'情況還在嗎？',
+ q_danger:'危險是否仍然存在？',q_lane:'車道是否仍然受阻？',q_cong:'是否仍然壅塞？',help:'你的回答能幫助其他騎士。',yes:'是，仍然存在',clear:'已經暢通',notsure:'不確定',meta:'2 分鐘前回報 · 3 位騎士已確認',
+ leg_danger:'危險',leg_lane:'車道受阻',leg_cong:'壅塞',routeSafer:'已切換更安全路線 · 避開 Elizabeth St',routeRestored:'回報已清除 · 已恢復原路線',restart:'重新開始',aboutBtn:'專案介紹',
+ riderA:'你：騎士 A · 回報中',riderB:'你：騎士 B · 相距 150 公尺',
+ cbd:'墨爾本市中心',flag:'Flagstaff',fss:'弗林德斯街車站',qvm:'維多利亞女王市場',
+ say_danger:'注意，前方150公尺 Elizabeth 街有危險，已為你找到更安全的路線。',say_lane:'注意，前方150公尺 Elizabeth 街自行車道受阻，已為你找到更安全的路線。',say_cong:'前方150公尺 Elizabeth 街嚴重壅塞，已為你找到更快的路線。'},
+ja:{tag:'みんなで報告。賢くナビ、安全に走行。',chooseLang:'言語を選択',audio:'音声アラート',audioSub:'走行中に音声で警告を聞く',start:'走行を開始',
+ deliveryIn:'あと12分で配達',to:'配達先：Collins St 123',reportBtn:'道路状況を報告',
+ what:'何がありましたか？',danger:'危険 / ハザード',lane:'車線の封鎖',cong:'渋滞',cancel:'キャンセル',
+ rep_danger:'危険を報告しました',rep_lane:'車線の封鎖を報告しました',rep_cong:'渋滞を報告しました',eliz:'Elizabeth St',now:'たった今',nearby:'ありがとうございます。近くのライダーに通知されます。',done:'完了',
+ alert_danger:'この先に危険',alert_lane:'この先の自転車レーンが封鎖中',alert_cong:'この先で激しい渋滞',dist:'150メートル',play:'音声アラートを再生',safer:'安全なルートへ',verifyBtn:'まだ続いていますか？',
+ q_danger:'危険はまだありますか？',q_lane:'車線はまだ封鎖されていますか？',q_cong:'まだ渋滞していますか？',help:'あなたの回答が他のライダーの役に立ちます。',yes:'はい、まだあります',clear:'解消済み',notsure:'わからない',meta:'2分前に報告 · 3人が確認',
+ leg_danger:'危険',leg_lane:'車線封鎖',leg_cong:'渋滞',routeSafer:'安全なルートに変更 · Elizabeth St を回避',routeRestored:'報告を解除 · 元のルートに戻しました',restart:'最初から',aboutBtn:'概要',
+ riderA:'あなた：ライダーA · 報告中',riderB:'あなた：ライダーB · 150m先',
+ cbd:'メルボルンCBD',flag:'Flagstaff',fss:'フリンダース・\nストリート駅',qvm:'クイーン・ビクトリア・\nマーケット',
+ say_danger:'注意。150メートル先のエリザベス・ストリートで危険が報告されています。より安全なルートがあります。',say_lane:'注意。150メートル先、エリザベス・ストリートの自転車レーンが封鎖されています。より安全なルートがあります。',say_cong:'150メートル先のエリザベス・ストリートで激しい渋滞があります。より早いルートがあります。'}
 };
-var CUR = 'en';
-function t(k){ var v = (D[CUR] && D[CUR][k]); if (v == null) v = D.en[k]; return v == null ? k : v; }
-function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function tx(k){ return esc(t(k)).replace(/\n/g,' '); }
+var st={n:1,lang:'en',audio:true,cat:'lane',verify:null};
+function t(k){var d=D[st.lang]||D.en;return d[k]!=null?d[k]:D.en[k];}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+var CATS={danger:{fill:'#e8403f',fg:'#fff',pin:'bang',icon:'alert',cls:'red'},lane:{fill:'#f2792a',fg:'#fff',pin:'barrier',icon:'barrier',cls:'orange'},cong:{fill:'#f9d24a',fg:'#2a2306',pin:'car',icon:'car',cls:'yellow'}};
 
-var CATS = [
-  {id:'danger', icon:'alert', pin:'bang', cls:'red', fill:'#ea4747', fg:'#fff'},
-  {id:'lane', icon:'barrier', pin:'barrier', cls:'orange', fill:'#f2792a', fg:'#fff'},
-  {id:'cong', icon:'car', pin:'car', cls:'yellow', fill:'#f9d24a', fg:'#2a2306'}
-];
-function cat(id){ for (var i=0;i<CATS.length;i++) if (CATS[i].id===id) return CATS[i]; return CATS[1]; }
-var VEH = [{id:'bicycle',icon:'bike'},{id:'ebike',icon:'ebike'},{id:'motorbike',icon:'moto'},{id:'car',icon:'carside'}];
-
-/* ---------------- map (Melbourne CBD, Hoddle Grid) ---------------- */
-var TH = -18*Math.PI/180, COS=Math.cos(TH), SIN=Math.sin(TH);
-function T(g){ var x=g[0]-225, y=g[1]-300; return [300 + x*COS - y*SIN, 380 + x*SIN + y*COS]; }
-// story geometry, in grid units
-var G = {
-  S:[175,480],          // rider start, Flinders St
-  B:[220,452],          // reported spot, Elizabeth St
-  D:[445,390],          // 123 Collins St
-  P1:[130,300],         // other report: danger (Queen/Bourke)
-  P2:[400,300],         // other report: congestion (Russell/Bourke)
-  flag:[-5,75], qvm:[175,-15], cbd:[265,250], fss:[318,500]
-};
-var ROUTE_ORIG = [G.S,[220,480],[220,390],G.D];
-var ROUTE_ALT  = [G.S,[310,480],[310,390],G.D];
-
-function buildBase(){
-  var xs=[-320,-230,-140,-50,40,130,220,310,400,490,580,670,760];
-  var ys=[-240,-150,-60,30,120,210,300,390,480];
-  var s='<g id="cbd"><g transform="translate(300 380) rotate(-18) translate(-225 -300)">';
-  s+='<rect x="-1500" y="-1500" width="4000" height="4000" fill="#eef1ef"/>';
-  // parks
-  s+='<rect x="-44" y="36" width="78" height="78" rx="6" fill="#cfe8d3"/>';
-  s+='<rect x="586" y="126" width="168" height="348" rx="8" fill="#cfe8d3"/>';
-  s+='<rect x="404" y="496" width="170" height="40" rx="8" fill="#cfe8d3"/>';
-  s+='<rect x="200" y="620" width="420" height="300" rx="8" fill="#cfe8d3"/>';
-  // market
-  s+='<rect x="136" y="-54" width="78" height="78" rx="4" fill="#f2e6cf"/>';
-  // blocks
-  for (var i=0;i<xs.length-1;i++) for (var j=0;j<ys.length-1;j++){
-    var x=xs[i], y=ys[j];
-    if (x===-50 && y===30) continue;           // Flagstaff Gardens
-    if (x===130 && y===-60) continue;          // Queen Victoria Market
-    if (x>=580 && y>=120) continue;            // Treasury & Fitzroy Gardens
-    s+='<rect x="'+(x+6)+'" y="'+(y+6)+'" width="78" height="78" rx="2" fill="#e2e7e4"/>';
-  }
-  for (var k=0;k<5;k++) s+='<rect x="'+(-320+k*95+6)+'" y="626" width="83" height="120" rx="2" fill="#e2e7e4"/>';
-  // river
-  s+='<path d="M-600 572C-300 600-100 540 150 566S470 606 660 566 960 546 1200 572" fill="none" stroke="#bcdcf1" stroke-width="46"/>';
-  // little streets
-  var lp=''; [165,255,345,435].forEach(function(y){ lp+='M-320 '+y+'H760'; }); [-60+45,30+45].forEach(function(y){ lp+='M-320 '+y+'H760'; });
-  s+='<path d="'+lp+'" stroke="#fff" stroke-width="4" fill="none"/>';
-  // main streets
-  var mp='';
-  [-150,30,120,210,300,390,480].forEach(function(y){ mp+='M-500 '+y+'H900'; });
-  xs.forEach(function(x){ mp+='M'+x+' -300V'+(x===310?920:(x===-140||x===580?600:484)); });
-  s+='<path d="'+mp+'" stroke="#d9e1dc" stroke-width="13" fill="none"/>';
-  s+='<path d="'+mp+'" stroke="#fff" stroke-width="10" fill="none"/>';
-  // street names
-  var st=[['Collins St',175,390,0],['Bourke St',265,300,0],['Flinders St',85,480,0],['Lonsdale St',355,210,0],['La Trobe St',265,120,0],
-          ['Elizabeth St',220,255,90],['Swanston St',310,165,90],['William St',40,345,90],['Queen St',130,435,90],['Russell St',400,435,90]];
-  st.forEach(function(a){ s+='<text x="'+a[1]+'" y="'+a[2]+'" font-size="7" font-weight="600" fill="#9aa7a1" text-anchor="middle" dominant-baseline="central"'+(a[3]?' transform="rotate(90 '+a[1]+' '+a[2]+')"':'')+'>'+a[0]+'</text>'; });
-  s+='</g></g>';
-  document.getElementById('mapDefs').innerHTML = s;
+/* ---------- Melbourne CBD map (Hoddle Grid, illustrative) ---------- */
+var TH=-18*Math.PI/180,COS=Math.cos(TH),SIN=Math.sin(TH);
+function T(g){var x=g[0]-225,y=g[1]-300;return[300+x*COS-y*SIN,380+x*SIN+y*COS];}
+var G={S:[175,480],B:[220,452],D:[445,390],P1:[130,300],P2:[400,300],flag:[-5,75],qvm:[175,-15],cbd:[265,250],fss:[262,514]};
+var ROUTE_ORIG=[G.S,[220,480],[220,390],G.D],ROUTE_ALT=[G.S,[310,480],[310,390],G.D];
+(function buildBase(){
+ var xs=[-410,-320,-230,-140,-50,40,130,220,310,400,490,580,670,760,850],ys=[-330,-240,-150,-60,30,120,210,300,390,480];
+ var s='<g id="cbd"><g transform="translate(300 380) rotate(-18) translate(-225 -300)"><rect x="-2000" y="-2000" width="5000" height="5000" fill="#eef1ef"/>';
+ s+='<rect x="-44" y="36" width="78" height="78" rx="6" fill="#cfe8d3"/><rect x="586" y="126" width="168" height="348" rx="8" fill="#cfe8d3"/><rect x="404" y="496" width="170" height="40" rx="8" fill="#cfe8d3"/><rect x="200" y="620" width="520" height="400" rx="8" fill="#cfe8d3"/><rect x="136" y="-54" width="78" height="78" rx="4" fill="#f2e6cf"/>';
+ for(var i=0;i<xs.length-1;i++)for(var j=0;j<ys.length-1;j++){var x=xs[i],y=ys[j];if((x===-50&&y===30)||(x===130&&y===-60)||(x>=580&&x<760&&y>=120))continue;s+='<rect x="'+(x+6)+'" y="'+(y+6)+'" width="78" height="78" rx="2" fill="#e2e7e4"/>';}
+ for(var k=0;k<6;k++)s+='<rect x="'+(-410+k*100+6)+'" y="626" width="88" height="130" rx="2" fill="#e2e7e4"/>';
+ s+='<path d="M-800 572C-300 600-100 540 150 566S470 606 660 566 960 546 1300 572" fill="none" stroke="#bcdcf1" stroke-width="46"/>';
+ var lp='';[-15,75,165,255,345,435].forEach(function(y){lp+='M-500 '+y+'H900';});s+='<path d="'+lp+'" stroke="#fff" stroke-width="4" fill="none"/>';
+ var mp='';[-240,-150,-60,30,120,210,300,390,480].forEach(function(y){mp+='M-700 '+y+'H1100';});xs.forEach(function(x){mp+='M'+x+' -500V'+(x===310?1000:(x===-140||x===580?600:484));});
+ s+='<path d="'+mp+'" stroke="#d9e1dc" stroke-width="13" fill="none"/><path d="'+mp+'" stroke="#fff" stroke-width="10" fill="none"/>';
+ [['Collins St',175,390,0],['Bourke St',265,300,0],['Flinders St',85,480,0],['Lonsdale St',355,210,0],['La Trobe St',265,120,0],['Elizabeth St',220,255,90],['Swanston St',310,165,90],['William St',40,345,90],['Queen St',130,435,90],['Russell St',400,435,90]].forEach(function(a){s+='<text x="'+a[1]+'" y="'+a[2]+'" font-size="7" font-weight="600" fill="#9aa7a1" text-anchor="middle" dominant-baseline="central"'+(a[3]?' transform="rotate(90 '+a[1]+' '+a[2]+')"':'')+'>'+a[0]+'</text>';});
+ document.getElementById('mapDefs').innerHTML=s+'</g></g>';
+})();
+function fitView(pts,W,H,p){var w=pts.map(T),xs=w.map(function(a){return a[0];}),ys=w.map(function(a){return a[1];});var x0=Math.min.apply(null,xs),x1=Math.max.apply(null,xs),y0=Math.min.apply(null,ys),y1=Math.max.apply(null,ys);var iw=Math.max(40,W-p.l-p.r),ih=Math.max(40,H-p.t-p.b);var k=Math.max((x1-x0)/iw,(y1-y0)/ih,p.min||0);return{vb:[(x0+x1)/2-(p.l+iw/2)*k,(y0+y1)/2-(p.t+ih/2)*k,W*k,H*k],k:k};}
+function f(n){return Math.round(n*10)/10;}
+function poly(pts,k,color,ghost){var p=pts.map(function(g){var w=T(g);return f(w[0])+','+f(w[1]);}).join(' ');
+ if(ghost)return '<polyline points="'+p+'" fill="none" stroke="#8b9893" stroke-width="'+f(3.5*k)+'" stroke-dasharray="'+f(6*k)+' '+f(6*k)+'" stroke-linecap="round" stroke-linejoin="round" opacity=".8"/>';
+ return '<polyline points="'+p+'" fill="none" stroke="#fff" stroke-width="'+f(11*k)+'" stroke-linecap="round" stroke-linejoin="round"/><polyline points="'+p+'" fill="none" stroke="'+color+'" stroke-width="'+f(6.5*k)+'" stroke-linecap="round" stroke-linejoin="round"/>';}
+function pin(kind,g,k,big){var w=T(g),s=k*(big?1.6:1.15),o='<g transform="translate('+f(w[0])+' '+f(w[1])+') scale('+s.toFixed(3)+')">';
+ if(kind==='dest')return o+'<path d="M0 0c-1.6-5-9-9.5-9-17a9 9 0 0 1 18 0c0 7.5-7.4 12-9 17z" fill="#e5413b" stroke="#fff" stroke-width="1.6"/><circle cy="-17" r="3.4" fill="#fff"/></g>';
+ if(kind==='me')return o+'<circle r="17" fill="#2f6fed" opacity=".16"/><circle r="10.5" fill="#2f6fed" stroke="#fff" stroke-width="2.6"/><path d="M0-5.5 4.2 4.5 0 2.3-4.2 4.5z" fill="#fff"/></g>';
+ var c=CATS[kind];return o+(big?'<circle r="24" class="pulse" fill="'+c.fill+'"/>':'')+'<circle r="12.5" cy="1.6" fill="#000" opacity=".16"/><circle r="12" fill="'+c.fill+'" stroke="#fff" stroke-width="2.2"/><g transform="translate(-6.6 -6.6) scale(.55)" fill="none" stroke="'+c.fg+'" stroke-width="'+(c.pin==='bang'?3.6:2.6)+'" stroke-linecap="round" stroke-linejoin="round">'+I[c.pin]+'</g></g>';}
+function label(g,text,k,strong){var w=T(g),lines=String(text).split('\n'),x0=strong?0:8,o='<g class="mlabel'+(strong?' strong':'')+'" transform="translate('+f(w[0])+' '+f(w[1])+') scale('+k.toFixed(3)+')">';
+ if(!strong)o+='<circle r="4.6" fill="#fff"/><circle r="3" fill="#7d8a85"/>';o+='<text x="'+x0+'" y="'+(strong?0:3.5)+'" text-anchor="'+(strong?'middle':'start')+'">';
+ lines.forEach(function(l,i){o+='<tspan x="'+x0+'" dy="'+(i?12.5:0)+'">'+esc(l)+'</tspan>';});return o+'</text></g>';}
+function drawMaps(){
+ document.querySelectorAll('.scr.on [data-map]').forEach(function(el){
+  var W=el.clientWidth,H=el.clientHeight;if(!W||!H)return;var type=el.getAttribute('data-map'),v,L='';
+  if(type==='nav'){v=fitView([G.S,G.D,G.flag,G.fss,[220,390]],W,H,{t:180,r:30,b:130,l:20});var k=v.k;
+   L=poly(ROUTE_ORIG,k,'#2f6fed')+label(G.flag,t('flag'),k)+label(G.cbd,t('cbd'),k,true)+label(G.fss,t('fss'),k)+pin('dest',G.D,k)+pin('me',G.S,k);}
+  else if(type==='confirm'){v=fitView([[G.B[0]-60,G.B[1]-40],[G.B[0]+60,G.B[1]+40]],W,H,{t:60,r:20,b:50,l:20});var k=v.k;
+   L=poly(ROUTE_ORIG,k,'#2f6fed')+pin(st.cat,G.B,k,true);}
+  else if(type==='alert'){v=fitView([G.S,G.B,[220,400]],W,H,{t:90,r:60,b:Math.min(H*0.62,430),l:60,min:0.35});var k=v.k;
+   L=poly(ROUTE_ORIG,k,'#2f6fed')+pin(st.cat,G.B,k,true)+pin('me',G.S,k);}
+  else{var cl=st.verify==='clear';v=fitView([G.S,G.D,G.P1,G.P2,G.flag],W,H,{t:110,r:120,b:170,l:16});var k=v.k;
+   L=(cl?poly(ROUTE_ORIG,k,'#2f6fed'):poly(ROUTE_ORIG,k,'',true)+poly(ROUTE_ALT,k,'#1f9d55'))+label(G.qvm,t('qvm'),k)+label(G.flag,t('flag'),k)+label(G.cbd,t('cbd'),k,true)+label(G.fss,t('fss'),k)+pin('danger',G.P1,k)+pin('cong',G.P2,k)+(cl?'':pin(st.cat,G.B,k))+pin('dest',G.D,k)+pin('me',G.S,k);}
+  el.innerHTML='<svg viewBox="'+v.vb.map(f).join(' ')+'" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#cbd"/>'+L+'</svg>';
+ });
 }
 
-function fitView(gpts, W, H, pad, minW){
-  var w = gpts.map(T), xs=w.map(function(p){return p[0];}), ys=w.map(function(p){return p[1];});
-  var x0=Math.min.apply(null,xs), x1=Math.max.apply(null,xs), y0=Math.min.apply(null,ys), y1=Math.max.apply(null,ys);
-  var iw=W-pad.l-pad.r, ih=H-pad.t-pad.b;
-  var k=Math.max((x1-x0)/iw,(y1-y0)/ih,(minW||0)/W);
-  var cx=(x0+x1)/2, cy=(y0+y1)/2;
-  return {vb:[cx-(pad.l+iw/2)*k, cy-(pad.t+ih/2)*k, W*k, H*k], k:k};
-}
-function f1(n){ return Math.round(n*10)/10; }
-function poly(pts, k, color, opts){
-  opts=opts||{};
-  var p = pts.map(function(g){ var w=T(g); return f1(w[0])+','+f1(w[1]); }).join(' ');
-  if (opts.ghost) return '<polyline points="'+p+'" fill="none" stroke="#8b9893" stroke-width="'+f1(3.2*k)+'" stroke-dasharray="'+f1(5*k)+' '+f1(5*k)+'" stroke-linecap="round" stroke-linejoin="round" opacity=".75"/>';
-  return '<polyline points="'+p+'" fill="none" stroke="#fff" stroke-width="'+f1(9.5*k)+'" stroke-linecap="round" stroke-linejoin="round"/>'+
-         '<polyline points="'+p+'" fill="none" stroke="'+color+'" stroke-width="'+f1(5.6*k)+'" stroke-linecap="round" stroke-linejoin="round"/>';
-}
-function pinSVG(kind, g, k, big){
-  var w=T(g), s=k*(big?1.22:1);
-  var open='<g transform="translate('+f1(w[0])+' '+f1(w[1])+') scale('+s.toFixed(3)+')">';
-  if (kind==='dest') return open+'<path d="M0 0c-1.6-5-9-9.5-9-17a9 9 0 0 1 18 0c0 7.5-7.4 12-9 17z" fill="#e5413b" stroke="#fff" stroke-width="1.6"/><circle cy="-17" r="3.4" fill="#fff"/></g>';
-  if (kind==='me') return open+'<circle r="17" fill="#2f6fed" opacity=".16"/><circle r="10.5" fill="#2f6fed" stroke="#fff" stroke-width="2.6"/><path d="M0-5.5 4.2 4.5 0 2.3-4.2 4.5z" fill="#fff"/></g>';
-  var c=cat(kind);
-  return open+(big?'<circle r="22" class="pulse" fill="'+c.fill+'"/>':'')+
-    '<circle r="12.5" cy="1.6" fill="#000" opacity=".16"/><circle r="12" fill="'+c.fill+'" stroke="#fff" stroke-width="2.2"/>'+
-    '<g transform="translate(-6.6 -6.6) scale(.55)" fill="none" stroke="'+c.fg+'" stroke-width="'+(c.pin==='bang'?3.6:2.6)+'" stroke-linecap="round" stroke-linejoin="round">'+I[c.pin]+'</g></g>';
-}
-function label(g, text, k, strong, dx, dy, end){
-  var w=T(g), lines=String(text).split('\n');
-  var x0 = strong?0:(end?-8:8);
-  var out='<g class="mlabel'+(strong?' strong':'')+'" transform="translate('+f1(w[0]+(dx||0)*k)+' '+f1(w[1]+(dy||0)*k)+') scale('+k.toFixed(3)+')">';
-  if (!strong) out+='<circle r="4.6" fill="#fff"/><circle r="3" fill="#7d8a85"/>';
-  out+='<text x="'+x0+'" y="'+(strong?0:3.5)+'" text-anchor="'+(strong?'middle':(end?'end':'start'))+'">';
-  lines.forEach(function(ln,i){ out+='<tspan x="'+x0+'" dy="'+(i?11.5:0)+'">'+esc(ln)+'</tspan>'; });
-  return out+'</text></g>';
-}
-function svgMap(view, inner){
-  return '<svg viewBox="'+view.vb.map(f1).join(' ')+'" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><use href="#cbd"/>'+inner+'</svg>';
-}
-function navMap(){
-  var v=fitView([G.S,G.D,G.flag,G.fss,[220,390]],300,514,{t:100,r:70,b:84,l:16});
-  var k=v.k;
-  return svgMap(v, poly(ROUTE_ORIG,k,'#2f6fed')+
-    label(G.flag,t('mapFlag'),k)+label(G.cbd,t('mapCBD'),k,true)+label(G.fss,t('mapFSS'),k,false,4,8)+
-    pinSVG('dest',G.D,k)+pinSVG('me',G.S,k));
-}
-function confirmMap(st){
-  var v=fitView([[G.B[0]-60,G.B[1]-36],[G.B[0]+60,G.B[1]+36]],262,150,{t:12,r:10,b:46,l:10});
-  var k=v.k;
-  return svgMap(v, poly(ROUTE_ORIG,k,'#2f6fed')+pinSVG(st.cat,G.B,k,true));
-}
-function alertMap(st){
-  var v=fitView([G.S,G.B,[220,410]],252,122,{t:16,r:40,b:16,l:40},170);
-  var k=v.k;
-  return svgMap(v, poly(ROUTE_ORIG,k,'#2f6fed')+pinSVG(st.cat,G.B,k,true)+pinSVG('me',G.S,k));
-}
-function updatedMap(st){
-  var cleared = st.verify==='clear';
-  var v=fitView([G.S,G.D,G.P1,G.P2,G.flag],300,514,{t:96,r:24,b:96,l:12});
-  var k=v.k;
-  var layers='';
-  if (cleared) layers+=poly(ROUTE_ORIG,k,'#2f6fed');
-  else layers+=poly(ROUTE_ORIG,k,'',{ghost:true})+poly(ROUTE_ALT,k,'#1f9d55');
-  layers+=label(G.qvm,t('mapQVM'),k)+label(G.flag,t('mapFlag'),k)+label(G.cbd,t('mapCBD'),k,true)+label([262,514],t('mapFSS'),k);
-  layers+=pinSVG('danger',G.P1,k)+pinSVG('cong',G.P2,k);
-  if (!cleared) layers+=pinSVG(st.cat,G.B,k);
-  layers+=pinSVG('dest',G.D,k)+pinSVG('me',G.S,k);
-  return svgMap(v, layers);
-}
-function pilotMap(){
-  var corners=[[-140,120],[580,120],[580,480],[-140,480]];
-  var v=fitView(corners.concat([G.qvm]),560,420,{t:44,r:18,b:30,l:18});
-  var k=v.k;
-  var p=corners.map(function(g){ var w=T(g); return f1(w[0])+','+f1(w[1]); }).join(' ');
-  var zone='<polygon points="'+p+'" fill="rgba(34,165,101,.10)" stroke="#178a57" stroke-width="'+f1(2.6*k)+'" stroke-dasharray="'+f1(8*k)+' '+f1(6*k)+'" stroke-linejoin="round"/>';
-  var saved=CUR; CUR='en';
-  var out=svgMap(v, zone+label(G.qvm,'Queen Victoria Market',k)+label(G.flag,'Flagstaff',k)+label(G.fss,'Flinders Street Station',k,false,8,12)+label([400,165],'Melbourne CBD',k,true)+
-    pinSVG('danger',G.P1,k)+pinSVG('lane',G.B,k)+pinSVG('cong',G.P2,k));
-  CUR=saved; return out;
-}
+/* ---------- rendering ---------- */
+var app=document.getElementById('app'),dots=document.getElementById('dots'),who=document.getElementById('who');
+document.querySelectorAll('[data-logo]').forEach(function(e){e.outerHTML=logo();});
+document.querySelectorAll('[data-ic]').forEach(function(e){e.insertAdjacentHTML('afterbegin',ic(e.getAttribute('data-ic')));e.removeAttribute('data-ic');});
+document.getElementById('backBtn').innerHTML=ic('arrowL');
+document.getElementById('aboutBtn').innerHTML=ic('info');
+for(var n=1;n<=7;n++)dots.insertAdjacentHTML('beforeend','<button data-go="'+n+'" aria-label="Screen '+n+'"></button>');
 
-/* ---------------- phone screens ---------------- */
-var SIG='<svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor" aria-hidden="true"><rect y="7" width="3" height="4" rx="1"/><rect x="4.5" y="5" width="3" height="6" rx="1"/><rect x="9" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.5" width="3" height="11" rx="1"/></svg>';
-var WIFI='<svg width="15" height="11" viewBox="0 0 15 11" fill="currentColor" aria-hidden="true"><path d="M7.5 2.2c2.1 0 4 .8 5.5 2.1l1.1-1.2A9.6 9.6 0 0 0 7.5.5 9.6 9.6 0 0 0 .9 3.1L2 4.3a8 8 0 0 1 5.5-2.1Zm0 3.3c1.2 0 2.3.4 3.2 1.2l1.1-1.2a6.4 6.4 0 0 0-8.6 0l1.1 1.2c.9-.8 2-1.2 3.2-1.2Zm0 3.2c-.5 0-1 .2-1.3.5l1.3 1.4 1.3-1.4c-.3-.3-.8-.5-1.3-.5Z"/></svg>';
-var BAT='<svg width="25" height="12" viewBox="0 0 25 12" fill="currentColor" aria-hidden="true"><rect x=".5" y=".5" width="21" height="11" rx="3" fill="none" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="18" height="8" rx="1.8"/><path d="M23 4v4c.8-.3 1.3-1 1.3-2s-.5-1.7-1.3-2Z" opacity=".5"/></svg>';
-
-function tabbar(active){
-  var tabs=[['home','tabHome','home',2],['map','tabMap','map',7],['reports','tabReports','file',3],['profile','tabProfile','user',1]];
-  return '<nav class="tabbar">'+tabs.map(function(a){ return '<button type="button" class="tab'+(active===a[0]?' on':'')+'" data-act="go" data-v="'+a[3]+'">'+ic(a[2])+'<span>'+tx(a[1])+'</span></button>'; }).join('')+'</nav>';
+function texts(){
+ document.documentElement.lang=st.lang;
+ document.querySelectorAll('[data-t]').forEach(function(e){e.textContent=String(t(e.getAttribute('data-t'))).replace(/\n/g,' ');});
+ document.getElementById('langs').innerHTML=LANGS.map(function(l){return '<button class="lang'+(l.c===st.lang?' on':'')+'" data-lang="'+l.c+'" aria-pressed="'+(l.c===st.lang)+'">'+l.n+'</button>';}).join('');
+ var c=CATS[st.cat];
+ document.getElementById('repTitle').textContent=t('rep_'+st.cat);
+ document.getElementById('alertTitle').textContent=t('alert_'+st.cat);
+ var b=document.getElementById('alertBadge');b.style.background=c.fill;b.style.color=c.fg;b.innerHTML=ic(c.icon);
+ document.getElementById('verifyQ').textContent=t('q_'+st.cat);
+ document.getElementById('yesTxt').textContent=t('yes');
+ document.getElementById('legend').innerHTML=['danger','lane','cong'].map(function(k){var q=CATS[k];return '<div><i class="dot '+q.cls+'">'+ic(q.pin,q.pin==='bang'?3.4:2.4)+'</i>'+esc(t('leg_'+k))+'</div>';}).join('');
+ var cl=st.verify==='clear',ts=document.getElementById('toast');ts.className='toast'+(cl?' grey':'');ts.innerHTML=ic(cl?'check':'route')+'<span>'+esc(t(cl?'routeRestored':'routeSafer'))+'</span>';
+ var sw=document.getElementById('audioSw');sw.classList.toggle('on',st.audio);sw.setAttribute('aria-checked',st.audio);sw.setAttribute('aria-label',t('audio'));
 }
-function s1(st, live){
-  var L=LANGS.filter(function(l){return l.code===st.lang;})[0]||LANGS[0];
-  var sel = live ? '<select id="app-lang" aria-label="'+tx('chooseLang')+'">'+LANGS.map(function(l){ return '<option value="'+l.code+'"'+(l.code===st.lang?' selected':'')+'>'+l.name+'</option>'; }).join('')+'</select>' : '';
-  return '<div class="app s1">'+
-    '<div class="s1-brand">'+logo()+'<div class="s1-word">Rider<span>Safe AI</span></div><p>'+tx('tag1')+'<br>'+tx('tag2')+'</p></div>'+
-    '<div class="fld"><div class="lbl">'+tx('chooseLang')+'</div><div class="selbox"><span class="lcode">'+L.short+'</span><span class="lname">'+L.name+'</span>'+ic('chev')+sel+'</div></div>'+
-    '<div class="fld"><div class="lbl">'+tx('vehicle')+'</div><div class="vgrid">'+VEH.map(function(v){ var on=st.vehicle===v.id; return '<button type="button" class="vt'+(on?' on':'')+'" data-act="vehicle" data-v="'+v.id+'" aria-pressed="'+on+'">'+ic(v.icon,1.8)+'<span>'+tx(v.id)+'</span></button>'; }).join('')+'</div></div>'+
-    '<div class="arow"><div><div class="lbl">'+tx('audio')+'</div><div class="sub">'+tx('audioSub')+'</div></div><button type="button" class="sw'+(st.audio?' on':'')+'" role="switch" aria-checked="'+st.audio+'" aria-label="'+tx('audio')+'" data-act="audio"><i></i></button></div>'+
-    '<button type="button" class="btn-g" data-act="go" data-v="2">'+tx('start')+' '+ic('arrowR')+'</button>'+
-  '</div>';
+function show(n){
+ st.n=n;
+ document.querySelectorAll('.scr').forEach(function(s){s.classList.toggle('on',+s.getAttribute('data-n')===n);});
+ dots.querySelectorAll('button').forEach(function(d,i){d.classList.toggle('on',i+1===n);});
+ dots.style.visibility=n===8?'hidden':'';
+ app.classList.toggle('dark',n===5);
+ document.getElementById('backBtn').hidden=(n===1);
+ document.getElementById('aboutBtn').hidden=(n===8);
+ who.hidden=!(n>=2&&n<=7)||n===3||n===6;
+ who.className='who'+(n>=5?' b':'');who.textContent=t(n>=5?'riderB':'riderA');
+ texts();drawMaps();
+ if(n===8)document.querySelector('.s8').scrollTop=0;
+ if(n!==5)stop();
 }
-function s2(st){
-  return '<div class="app">'+
-    '<div class="mapwrap">'+navMap()+
-      '<div class="tripcard"><div><b>'+tx('deliveryIn')+'</b><span>'+tx('to')+'</span></div><span class="x">'+ic('x')+'</span></div>'+
-      '<div class="fabs"><span class="fab">'+ic('locate')+'</span><button type="button" class="fab" data-act="audio" aria-label="'+tx('audio')+'">'+ic(st.audio?'vol':'volx')+'</button></div>'+
-      '<button type="button" class="btn-g report" data-act="go" data-v="3">'+ic('alert')+' '+tx('reportBtn')+'</button>'+
-    '</div>'+tabbar('home')+'</div>';
-}
-function s3(){
-  return '<div class="app s3"><h4>'+tx('what')+'</h4><p class="sub">'+tx('tapOne')+'</p><div class="cats">'+
-    CATS.map(function(c){ return '<button type="button" class="cat '+c.cls+'" data-act="report" data-v="'+c.id+'">'+ic(c.icon,2.1)+'<span><b>'+tx(c.id)+'</b><small>'+tx(c.id+'Desc')+'</small></span></button>'; }).join('')+
-    '</div><button type="button" class="btn-grey" data-act="go" data-v="2">'+tx('cancel')+'</button></div>';
-}
-function s4(st){
-  return '<div class="app s4"><div class="okc">'+ic('check',3)+'</div><h4>'+tx('rep_'+st.cat)+'</h4><p class="sub">'+tx('thanks')+'</p>'+
-    '<div class="minimap">'+confirmMap(st)+'<div class="maplabel"><b>'+tx('eliz')+'</b><span>'+tx('mapCBD')+'</span></div></div>'+
-    '<ul class="facts"><li>'+ic('pin')+'<div><b>'+tx('location')+'</b><span>'+tx('locVal')+'</span></div></li><li>'+ic('clock')+'<div><b>'+tx('time')+'</b><span>'+tx('now')+'</span></div></li><li>'+ic('users')+'<div><span>'+tx('nearby')+'</span></div></li></ul>'+
-    '<button type="button" class="btn-g" data-act="done">'+tx('done')+'</button></div>';
-}
-function s5(st){
-  return '<div class="app s5"><div class="ncard">'+
-    '<div class="nhead"><span class="appic">'+ic('alert',2.4)+'</span><span>RiderSafe AI</span><button type="button" class="nx" data-act="go" data-v="7" aria-label="Dismiss">'+ic('x',2.6)+'</button></div>'+
-    '<h4>'+tx('alert_'+st.cat)+'</h4><p class="dist">'+tx('dist')+'</p>'+
-    '<div class="minimap">'+alertMap(st)+'</div>'+
-    '<button type="button" class="audiochip" data-act="speak">'+ic('vol')+' '+tx('play')+'</button>'+
-    '<button type="button" class="btn-g" data-act="safer">'+tx('safer')+'</button>'+
-    '<button type="button" class="btn-dk" data-act="go" data-v="6">'+tx('details')+'</button>'+
-    '<p class="reported">'+ic('users')+' '+tx('reported')+'</p>'+
-  '</div></div>';
-}
-function s6(st){
-  return '<div class="app s6"><button type="button" class="back" data-act="go" data-v="5" aria-label="Back">'+ic('arrowL')+'</button>'+
-    '<h4>'+tx('q_'+st.cat)+'</h4><p class="sub">'+tx('help')+'</p>'+
-    '<div class="vopts"><button type="button" class="vo yes" data-act="verify" data-v="yes">'+ic('thumb')+' '+tx('yes_'+st.cat)+'</button>'+
-    '<button type="button" class="vo" data-act="verify" data-v="clear">'+ic('check',2.4)+' '+tx('clear')+'</button>'+
-    '<button type="button" class="vo" data-act="verify" data-v="unsure">'+ic('x',2.4)+' '+tx('notsure')+'</button></div>'+
-    '<p class="meta">'+ic('users')+' '+tx('meta')+'</p></div>';
-}
-function s7(st){
-  var cleared = st.verify==='clear';
-  return '<div class="app"><div class="mapwrap">'+updatedMap(st)+
-    '<div class="legend">'+CATS.map(function(c){ return '<div><i class="dot '+c.cls+'">'+ic(c.pin==='bang'?'bang':c.pin, c.pin==='bang'?3.4:2.4)+'</i>'+tx('leg_'+c.id)+'</div>'; }).join('')+'</div>'+
-    '<div class="toast'+(cleared?' grey':'')+'">'+ic(cleared?'check':'route')+'<span>'+tx(cleared?'routeRestored':'routeSafer')+'</span></div>'+
-    '<div class="fabs low"><span class="fab">'+ic('locate')+'</span><span class="fab blue">'+NAVARROW+'</span></div>'+
-    '</div>'+tabbar('map')+'</div>';
-}
-var SCREENS=[null,s1,s2,s3,s4,s5,s6,s7];
-function phone(n, st, live){
-  var dark = n===5;
-  return '<div class="phone"><div class="ps'+(dark?' dark':'')+'" lang="'+st.lang+'"><div class="island"></div>'+
-    '<div class="status"><span>9:41</span><span class="si">'+SIG+WIFI+BAT+'</span></div>'+
-    SCREENS[n](st, live)+'<div class="homebar"></div></div></div>';
-}
-
-/* ---------------- static renders ---------------- */
-var STATIC = {lang:'en', vehicle:'ebike', audio:true, cat:'lane', verify:null};
-var META = [null,
-  {t:'Onboarding', s:'Set your preferences', c:'Select your language, vehicle type and audio alert preferences.', d:'Select preferred language, vehicle type and audio-alert preference. This supports international riders from the beginning of the journey.'},
-  {t:'Navigation', s:'Your delivery route', c:'View your delivery route and report road conditions anytime.', d:'Shows the active delivery route with a large “Report road condition” action, keeping reporting accessible without overcrowding the interface.'},
-  {t:'Quick Report', s:'Tell us what happened', c:'Choose the type of road condition you want to report.', d:'Three large, colour-coded categories: Danger/Hazard, Lane/Path Blocked and Congestion. The goal is fast recognition and minimal interaction.'},
-  {t:'Confirmation', s:'Your report is shared', c:'Your report is automatically shared with nearby riders.', d:'Confirms the report, location and time, and explains that nearby riders will be alerted.'},
-  {t:'Alert for Another Rider', s:'Real-time notification', c:'Nearby riders receive visual and audio alerts about reported issues.', d:'A nearby rider receives a visual and audio warning and can view a safer alternative route.'},
-  {t:'Community Verification', s:'Help keep reports accurate', c:'Riders can confirm or clear reports, improving reliability.', d:'Riders can confirm that the issue remains, mark it clear, or indicate uncertainty. This helps keep outdated information off the map.'},
-  {t:'Updated Map', s:'A safer route for everyone', c:'The shared map shows rider reports and an adjusted route.', d:'The shared map displays rider-reported hazards and an adjusted route, completing the community feedback loop.'}
-];
-var CHECKS=['Designed for international food-delivery riders','Real-time, community-powered hazard reporting','Multilingual audio alerts','Safer routes, smoother deliveries','A safer Melbourne for everyone'];
-
-function skyline(){
-  var b=[[9,16],[7,24],[11,13],[7,32],[9,21],[6,38,'spire'],[12,15],[8,28],[7,58,'eureka'],[10,23],[7,36],[9,19],[6,44],[11,27],[8,15],[7,33],[10,21],[6,52,'mast'],[9,29],[12,17],[7,25],[10,13],[8,35],[9,19],[6,12],[10,22]];
-  var x=0, base=76, d='M0 '+base;
-  b.forEach(function(a){ var w=a[0], h=a[1], k=a[2], top=base-h;
-    if (k==='spire') d+=' H'+x+' V'+(top+16)+' L'+(x+w/2)+' '+(top-14)+' L'+(x+w)+' '+(top+16)+' V'+base;
-    else if (k==='eureka') d+=' H'+x+' V'+top+' H'+(x+w)+' V'+base+' M'+(x+w/2)+' '+top+' V'+(top-5)+' M'+(x+w)+' '+base;
-    else if (k==='mast') d+=' H'+x+' V'+(top+8)+' H'+(x+w/2-1)+' V'+top+' H'+(x+w/2+1)+' V'+(top+8)+' H'+(x+w)+' V'+base;
-    else d+=' H'+x+' V'+top+' H'+(x+w)+' V'+base;
-    x+=w+2; });
-  return d+' H300';
-}
-
-function renderStatic(){
-  // icons & logos in page markup
-  document.querySelectorAll('[data-ic]').forEach(function(el){ el.outerHTML = ic(el.getAttribute('data-ic')); });
-  document.querySelectorAll('[data-logo]').forEach(function(el){ el.outerHTML = logo(); });
-  document.getElementById('skyPath').setAttribute('d', skyline());
-  document.getElementById('footChecks').innerHTML = CHECKS.map(function(c){ return '<li><i>'+ic('check',3)+'</i>'+c+'</li>'; }).join('');
-  // hero
-  CUR='en';
-  document.getElementById('heroPhones').innerHTML = phone(2, STATIC) + phone(5, STATIC);
-  // storyboard
-  var html='';
-  for (var n=1;n<=7;n++){
-    html+='<article class="shot" data-open="'+n+'">'+
-      '<h3>'+n+'. '+META[n].t+'</h3><p>'+META[n].s+'</p>'+
-      '<div class="pfit" data-fit="0.8" data-span="316" inert>'+phone(n, STATIC)+'</div>'+
-      '<p class="cap">'+META[n].c+'</p><button type="button" class="open" aria-label="Open screen '+n+', '+META[n].t+', in the live prototype">Open in live prototype '+ic('arrowR')+'</button></article>';
-  }
-  html+='<div class="shot summary">'+logo()+'<div class="word">Rider<span>Safe AI</span></div><p class="tl">Report together.<br>Navigate smarter. Ride safer.</p>'+
-    '<ul class="checks">'+CHECKS.map(function(c){ return '<li><i>'+ic('check',3)+'</i>'+c+'</li>'; }).join('')+'</ul>'+
-    '<svg class="skyline" viewBox="0 0 300 80" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" aria-hidden="true"><path d="'+skyline()+'"/></svg><p class="foot">Melbourne rides better together.</p></div>';
-  document.getElementById('board').innerHTML = html;
-  // hero phones are decorative
-  document.getElementById('heroPhones').setAttribute('inert','');
-  document.getElementById('pilotMap').insertAdjacentHTML('afterbegin', pilotMap());
-}
-
-/* ---------------- live demo ---------------- */
-var DEF = {screen:1, lang:'en', vehicle:'ebike', audio:true, cat:'lane', verify:null};
-var st = JSON.parse(JSON.stringify(DEF));
-var visited = {};
-var fitEl = document.getElementById('demoFit');
-var stepsEl = document.getElementById('steps');
-var chip = document.getElementById('riderChip');
-var liveEl = document.getElementById('live');
-var demoLang = document.getElementById('demoLang');
-
-demoLang.innerHTML = LANGS.map(function(l){ return '<option value="'+l.code+'">'+l.name+'</option>'; }).join('');
-stepsEl.innerHTML = META.slice(1).map(function(m,i){ return '<li><button type="button" class="step" data-step="'+(i+1)+'"><span class="n">'+(i+1)+'</span><span><b>'+m.t+'</b><small>'+m.d+'</small></span></button></li>'; }).join('');
-
-function renderDemo(){
-  CUR = st.lang;
-  fitEl.innerHTML = phone(st.screen, st, true);
-  visited[st.screen]=true;
-  stepsEl.querySelectorAll('.step').forEach(function(b){
-    var n=+b.getAttribute('data-step');
-    b.classList.toggle('on', n===st.screen);
-    b.classList.toggle('done', n!==st.screen && !!visited[n]);
-    b.setAttribute('aria-current', n===st.screen ? 'step' : 'false');
-  });
-  var isB = st.screen>=5;
-  chip.classList.toggle('b', isB);
-  chip.lastElementChild.textContent = isB ? 'Rider B · 150 m away' : 'Rider A · reporting';
-  demoLang.value = st.lang;
-  document.getElementById('prevBtn').disabled = st.screen===1;
-  document.getElementById('nextBtn').disabled = st.screen===7;
-  liveEl.textContent = 'Screen '+st.screen+' of 7: '+META[st.screen].t;
-  fit();
-}
-function go(n){ st.screen = Math.max(1, Math.min(7, n)); renderDemo(); }
-
-var speaking=false;
 function speak(){
-  try{
-    if (!st.audio || !('speechSynthesis' in window)) return;
-    var synth = window.speechSynthesis;
-    synth.cancel();
-    var L = LANGS.filter(function(l){return l.code===st.lang;})[0];
-    var u = new SpeechSynthesisUtterance(D[st.lang]['say_'+st.cat] || D.en['say_'+st.cat]);
-    u.lang = L.voice; u.rate = 1;
-    var voices = synth.getVoices ? synth.getVoices() : [];
-    var want = L.voice.toLowerCase();
-    var v = voices.filter(function(x){ return x.lang && x.lang.replace('_','-').toLowerCase()===want; })[0] ||
-            voices.filter(function(x){ return x.lang && x.lang.toLowerCase().indexOf(want.slice(0,2))===0; })[0];
-    if (v) u.voice = v;
-    var chipBtn = fitEl.querySelector('.audiochip');
-    u.onstart = function(){ var c=fitEl.querySelector('.audiochip'); if(c) c.classList.add('speaking'); };
-    u.onend = u.onerror = function(){ var c=fitEl.querySelector('.audiochip'); if(c) c.classList.remove('speaking'); };
-    synth.speak(u);
-  }catch(e){}
+ try{if(!st.audio||!('speechSynthesis' in window))return;var s=window.speechSynthesis;s.cancel();
+  var L=LANGS.filter(function(l){return l.c===st.lang;})[0],u=new SpeechSynthesisUtterance(t('say_'+st.cat));u.lang=L.v;
+  var vs=s.getVoices?s.getVoices():[],want=L.v.toLowerCase(),v=vs.filter(function(x){return x.lang&&x.lang.replace('_','-').toLowerCase()===want;})[0]||vs.filter(function(x){return x.lang&&x.lang.toLowerCase().indexOf(want.slice(0,2))===0;})[0];if(v)u.voice=v;
+  var p=document.getElementById('playBtn');u.onstart=function(){p.classList.add('on');};u.onend=u.onerror=function(){p.classList.remove('on');};s.speak(u);}catch(e){}
 }
-function stopSpeech(){ try{ if ('speechSynthesis' in window) window.speechSynthesis.cancel(); }catch(e){} }
+function stop(){try{if('speechSynthesis' in window)speechSynthesis.cancel();}catch(e){}document.getElementById('playBtn').classList.remove('on');}
 
-fitEl.addEventListener('click', function(e){
-  var b = e.target.closest('[data-act]'); if (!b || !fitEl.contains(b)) return;
-  var a = b.getAttribute('data-act'), v = b.getAttribute('data-v');
-  if (a==='go'){ if (+v!==5) stopSpeech(); go(+v); }
-  else if (a==='vehicle'){ st.vehicle=v; renderDemo(); }
-  else if (a==='audio'){ st.audio=!st.audio; if(!st.audio) stopSpeech(); renderDemo(); }
-  else if (a==='report'){ st.cat=v; st.verify=null; go(4); }
-  else if (a==='done'){ st.verify=null; go(5); speak(); }
-  else if (a==='speak'){ var was=st.audio; st.audio=true; speak(); st.audio=was; }
-  else if (a==='safer'){ stopSpeech(); st.verify=null; go(7); }
-  else if (a==='verify'){ st.verify=v; go(7); }
+app.addEventListener('click',function(e){
+ var b=e.target.closest('button');if(!b)return;
+ if(b.id==='backBtn'){show(st.n===8?7:Math.max(1,st.n-1));return;}
+ if(b.id==='aboutBtn'){show(8);return;}
+ if(b.id==='audioSw'){st.audio=!st.audio;texts();return;}
+ if(b.id==='playBtn'){var a=st.audio;st.audio=true;speak();st.audio=a;return;}
+ if(b.id==='restartBtn'){st.verify=null;st.cat='lane';show(1);return;}
+ if(b.hasAttribute('data-lang')){st.lang=b.getAttribute('data-lang');texts();return;}
+ if(b.hasAttribute('data-cat')){st.cat=b.getAttribute('data-cat');st.verify=null;show(4);return;}
+ if(b.hasAttribute('data-verify')){st.verify=b.getAttribute('data-verify');show(7);return;}
+ if(b.hasAttribute('data-go')){var n=+b.getAttribute('data-go');if(b.hasAttribute('data-route'))st.verify=null;if(n===1){st.verify=null;}show(n);if(n===5)speak();}
 });
-fitEl.addEventListener('change', function(e){ if (e.target.id==='app-lang'){ st.lang=e.target.value; renderDemo(); var s=fitEl.querySelector('#app-lang'); if (s) s.focus(); } });
-demoLang.addEventListener('change', function(){ st.lang=demoLang.value; renderDemo(); });
-stepsEl.addEventListener('click', function(e){ var b=e.target.closest('.step'); if(!b) return; stopSpeech(); go(+b.getAttribute('data-step')); });
-document.getElementById('prevBtn').addEventListener('click', function(){ stopSpeech(); go(st.screen-1); });
-document.getElementById('nextBtn').addEventListener('click', function(){ var n=st.screen+1; if (n===5){ go(5); speak(); } else { stopSpeech(); go(n); } });
-document.getElementById('resetBtn').addEventListener('click', function(){ stopSpeech(); var l=st.lang; st=JSON.parse(JSON.stringify(DEF)); st.lang=l; visited={}; renderDemo(); });
-
-document.getElementById('board').addEventListener('click', function(e){
-  var b=e.target.closest('[data-open]'); if(!b) return;
-  stopSpeech(); st.verify=null; go(+b.getAttribute('data-open'));
-  document.getElementById('demo').scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block:'start'});
-});
-
-/* ---------------- phone scaling ---------------- */
-function fit(){
-  document.querySelectorAll('[data-fit]').forEach(function(w){
-    var max=parseFloat(w.getAttribute('data-fit'))||1, span=parseFloat(w.getAttribute('data-span'))||316;
-    var width=w.clientWidth; if (!width) return;
-    w.style.setProperty('--z', Math.min(max, width/span).toFixed(3));
-  });
-}
-
-buildBase();
-renderStatic();
-renderDemo();
-fit();
-if ('ResizeObserver' in window){ var ro=new ResizeObserver(function(){ fit(); }); document.querySelectorAll('[data-fit]').forEach(function(w){ ro.observe(w); }); }
-else window.addEventListener('resize', fit);
-if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
-try{ if ('speechSynthesis' in window && speechSynthesis.getVoices) speechSynthesis.getVoices(); }catch(e){}
+var rt;window.addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(drawMaps,120);});
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(drawMaps);
+try{if('speechSynthesis' in window)speechSynthesis.getVoices();}catch(e){}
+show(1);
 })();
 </script>
-
-</body></html>
+</body>
+</html>
